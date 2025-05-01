@@ -12,14 +12,7 @@ int main() {
     char addressB = 14;
     int seletor = 0;
 
-    // Enviando Matriz A  
-    enviarMatriz(n0, n1, 0, addressA, 2);
-
-    // Enviando Matriz B
-    enviarMatriz(n0, n1, 1, addressB, 2);
-    
-    // Testando opcode de soma
-    somar();
+    iniciarPrograma(seletor, n0, n1, addressA, addressB);
 
 
     return 0;   
@@ -37,8 +30,7 @@ void enviarMatriz(signed char n0, signed char n1, char id, char address, char TA
 
 }
 
-int seletorDeOpcode(int seletor){
-
+int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, char addressB) {
     printf("\nDIGITE A OPERAÇÃO DESEJADA: ");
     printf("\n[1] LEITURA: ");
     printf("\n[2] ESCRITA: ");
@@ -52,16 +44,49 @@ int seletorDeOpcode(int seletor){
     printf("\n[10] DETER3X3: ");
     printf("\n[11] DETER4X4: ");
     printf("\n[12] DETER5X5: ");
+    scanf("%d", &seletor);  
 
-
-    switch (seletor)
-    {
-    case 1:
-        /* code */
-        break;
-    
-    default:
-        break;
+    switch (seletor) {
+        case 1:
+            ler(addressA);  
+            break;
+        case 2:
+            enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
+            enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
+            break;
+        case 3:
+            soma();     
+            break;
+        case 4:
+            subtracao(); 
+            break;
+        case 5:
+            multiplicacao(); 
+            break;
+        case 6:
+            transposicao();    
+            break;
+        case 7:
+            oposta();       
+            break;
+        case 8:
+            // multiEscalar(); 
+            break;
+        case 9:
+            determinante2x2();     
+            break;
+        case 10:
+            determinante3x3();     
+            break;
+        case 11:
+            determinante4x4();     
+            break;
+        case 12:
+            determinante5x5();    
+            break;
+        default:
+            printf("Opção inválida! Tente novamente.\n");
+            break;
     }
-
+    return seletor;
 }
