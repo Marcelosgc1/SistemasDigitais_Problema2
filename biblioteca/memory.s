@@ -280,6 +280,19 @@ write_instruction:
         LDR R1, =FPGA_ADRS
         LDR R1, [R1, #0]
         STR R0, [R1, #0]
+        MOV R0, #1
+        STR R0, [R1, #1] @deslocamento p/ sinal de "activate_instruction"
+activate_loop:
+        LDR R0, [R1, #2] @deslocmento p/ sinal de "wait_signal"
+        CMP R0, #0
+        BEQ activate_loop
+        
+        STR R0, [R1, #0] @deslocamento p/ sinal de "activate_instruction"
+wait_loop:
+        LDR R0, [R1, #2] @deslocmento p/ sinal de "wait_signal"
+        CMP R0, #1
+        BEQ wait_loop
+
 
         LDR R0, [SP, #0]
         ADD SP, SP, #4
