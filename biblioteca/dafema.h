@@ -1,6 +1,9 @@
 #ifndef DAFEMA_H
 #define DAFEMA_H
 
+/* Mapeia a memória para o endereço base do AXI Bridge*/
+void mapeiaMemoria();
+
 /* Escreve dois números no endereço indicado */
 void escrever(signed char n0, signed char n1, char address);
 

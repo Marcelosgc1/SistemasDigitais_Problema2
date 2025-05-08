@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <dafema.h>
 
-void escrever(signed char n0, signed char n1, char id, char linha, char coluna, char address);
-void soma();
 
 int main() {
 
@@ -14,7 +12,6 @@ int main() {
 
     iniciarPrograma(seletor, n0, n1, addressA, addressB);
 
-
     return 0;   
 }
 
@@ -24,7 +21,7 @@ void enviarMatriz(signed char n0, signed char n1, char id, char address, char TA
     for(char i = 0; i < TAM; i++){
         for(char j = i % 2; i < TAM; j+=2){
             // i = Linha , j = Coluna
-            escrever(n0 + i, n1 + i, id, i, j, address + 1);
+            escrever(n0 + i, n1 + i, address + 1);
         }
     }
 
@@ -67,10 +64,10 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, 
             transposicao();    
             break;
         case 7:
-            oposta();       
+            oposta();
             break;
         case 8:
-            // multiEscalar(); 
+            multiEscalar(5); 
             break;
         case 9:
             determinante2x2();     
