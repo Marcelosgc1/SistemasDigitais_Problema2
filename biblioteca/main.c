@@ -1,31 +1,29 @@
 #include <stdio.h>
-#include <dafema.h>
+#include "dafema.h"
 
 
-int main() {
+int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, char addressB);
 
-    signed char n0 = 0;
-    signed char n1 = 1;
-    char addressA = 0;
-    char addressB = 14;
-    int seletor = 0;
+int main(){
+	printf("a\n");
+	mapeiaMemoria();
+	printf("b\n");
+	soma();
+	printf("c\n");
 
-    iniciarPrograma(seletor, n0, n1, addressA, addressB);
+	signed char n0 = 0;
+	signed char n1 = 1;
+	char addressA = 0;
+	char addressB = 14;
+	int seletor = 0;
+	int x = 0;
+	while (x != 2) {
+		x = iniciarPrograma(seletor, n0, n1, addressA, addressB);
+	}
 
-    return 0;   
-}
+	return 0;
+};
 
-// Encaminhamento de Matriz para teste
-void enviarMatriz(signed char n0, signed char n1, char id, char address, char TAM){
- 
-    for(char i = 0; i < TAM; i++){
-        for(char j = i % 2; i < TAM; j+=2){
-            // i = Linha , j = Coluna
-            escrever(n0 + i, n1 + i, address + 1);
-        }
-    }
-
-}
 
 int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, char addressB) {
     printf("\nDIGITE A OPERAÇÃO DESEJADA: ");
@@ -40,7 +38,7 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, 
     printf("\n[9] DETER2X2: ");
     printf("\n[10] DETER3X3: ");
     printf("\n[11] DETER4X4: ");
-    printf("\n[12] DETER5X5: ");
+    printf("\n[12] DETER5X5: \n");
     scanf("%d", &seletor);  
 
     switch (seletor) {
@@ -48,8 +46,10 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, 
             ler(addressA);  
             break;
         case 2:
-            enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
-            enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
+	        printf("wip\n");
+	        escrever(1,2,1);
+            //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
+            //enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
             break;
         case 3:
             soma();     
