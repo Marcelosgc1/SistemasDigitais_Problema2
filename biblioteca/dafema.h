@@ -4,11 +4,31 @@
 /* Mapeia a memória para o endereço base do AXI Bridge*/
 void mapeiaMemoria();
 
-/* Escreve dois números no endereço indicado */
-void escrever(signed char n0, signed char n1, char address);
+/* Escreve dois números no endereço indicado
+ * col: Coluna que os valores serão escritos
+ * lin: Linha que os valores serão escritos
+ * matriz: Indica qual matriz você vai escrever,
+ * 0 => matriz A
+ * 1 => matriz B
+ * 2 => matriz C
+ * n0: Valor escrito da linha e coluna indicadas
+ * n1: Valor escrito no próximo espaço da matriz
+ * 
+ * retorno: -1 se mal sucedido, 0 se bem sucedido
+ */
+int escrever(signed char n0, signed char n1, unsigned char matriz, unsigned char lin, unsigned char col);
 
-/* Lê dois números do endereço indicado */
-char ler(char address);
+/* Lê dois números do endereço indicado 
+ * col: Coluna que os valores serão escritos
+ * lin: Linha que os valores serão escritos
+ * matriz: Indica qual matriz você vai escrever,
+ * 0 => matriz A
+ * 1 => matriz B
+ * 2 => matriz C
+ * 
+ * retorno: -1 se mal sucedido, se bem sucedido um pacote de 16 bits contendo 2 chars
+ */
+unsigned int ler(unsigned char matriz, unsigned char lin, unsigned char col);
 
 /* Multiplica matriz A por char */
 void multiEscalar(char multi);

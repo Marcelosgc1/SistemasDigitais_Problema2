@@ -43,11 +43,11 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, 
 
     switch (seletor) {
         case 1:
-            ler(addressA);  
+            ler(0,0,0);  
             break;
         case 2:
 	        printf("wip\n");
-	        escrever(1,2,1);
+	        escrever(1,2,0,0,0);
             //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
             //enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
             break;
