@@ -168,7 +168,7 @@ ler:
         
         LDR R1, =FPGA_ADRS
         LDR R1, [R1, #0]
-        LDR R0, [R1, #0x10]
+        LDR R0, [R1, #0x40]
         
         LDR LR, [SP, #0]
         ADD SP, SP, #4
@@ -337,7 +337,9 @@ write_instruction:
 
         LDR R1, =FPGA_ADRS
         LDR R1, [R1, #0]
-        STR R0, [R1, #0]
+        STR R0, [R1, #0x20]
+        /*
+
         MOV R0, #1
         STR R0, [R1, #0x30] //deslocamento p/ sinal de "activate_instruction"
 activate_loop:
@@ -351,7 +353,7 @@ wait_loop:
         CMP R0, #1
         BEQ wait_loop
         
-
+        */
         LDR R1, [SP, #0]
         ADD SP, SP, #4
 
