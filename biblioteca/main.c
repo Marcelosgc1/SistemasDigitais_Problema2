@@ -2,7 +2,7 @@
 #include "dafema.h"
 
 
-int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, char addressB);
+int iniciarPrograma(int seletor, signed char n0, signed char n1);
 
 int main(){
 	printf("a\n");
@@ -13,19 +13,17 @@ int main(){
 
 	signed char n0 = 0;
 	signed char n1 = 1;
-	char addressA = 0;
-	char addressB = 14;
 	int seletor = 0;
 	int x = 0;
 	while (x != 2) {
-		x = iniciarPrograma(seletor, n0, n1, addressA, addressB);
+		x = iniciarPrograma(seletor, n0, n1);
 	}
 
 	return 0;
 };
 
 
-int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, char addressB) {
+int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\nDIGITE A OPERAÇÃO DESEJADA: ");
     printf("\n[1] LEITURA: ");
     printf("\n[2] ESCRITA: ");
@@ -38,7 +36,8 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, 
     printf("\n[9] DETER2X2: ");
     printf("\n[10] DETER3X3: ");
     printf("\n[11] DETER4X4: ");
-    printf("\n[12] DETER5X5: \n");
+    printf("\n[12] DETER5X5: ");
+    printf("\n[13] LER RESULT: ");
     scanf("%d", &seletor);  
 
     switch (seletor) {
@@ -80,6 +79,9 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1, char addressA, 
             break;
         case 12:
             determinante5x5();    
+            break;
+        case 13:
+            ler(2,0,0);  
             break;
         default:
             printf("Opção inválida! Tente novamente.\n");

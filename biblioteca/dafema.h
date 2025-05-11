@@ -5,26 +5,26 @@
 void mapeiaMemoria();
 
 /* Escreve dois números no endereço indicado
- * col: Coluna que os valores serão escritos
- * lin: Linha que os valores serão escritos
+ * n0: Valor escrito da linha e coluna indicadas
+ * n1: Valor escrito no próximo espaço da matriz
  * matriz: Indica qual matriz você vai escrever,
  * 0 => matriz A
  * 1 => matriz B
  * 2 => matriz C
- * n0: Valor escrito da linha e coluna indicadas
- * n1: Valor escrito no próximo espaço da matriz
+ * lin: Linha que os valores serão escritos
+ * col: Coluna que os valores serão escritos
  * 
  * retorno: -1 se mal sucedido, 0 se bem sucedido
  */
 int escrever(signed char n0, signed char n1, unsigned char matriz, unsigned char lin, unsigned char col);
 
 /* Lê dois números do endereço indicado 
- * col: Coluna que os valores serão escritos
- * lin: Linha que os valores serão escritos
  * matriz: Indica qual matriz você vai escrever,
  * 0 => matriz A
  * 1 => matriz B
  * 2 => matriz C
+ * lin: Linha que os valores serão escritos
+ * col: Coluna que os valores serão escritos
  * 
  * retorno: -1 se mal sucedido, se bem sucedido um pacote de 16 bits contendo 2 chars
  */

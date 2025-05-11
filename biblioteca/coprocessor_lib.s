@@ -50,7 +50,7 @@ mapeiaMemoria:
         STR R5, [SP, #20]
         STR R7, [SP, #24]
 
-        @abrindo dev/mem para acessar a func mmap2
+        //abrindo dev/mem para acessar a func mmap2
         LDR R0, =DEV_MEM
         MOV R1, #2
         MOV R2, #0
@@ -60,7 +60,7 @@ mapeiaMemoria:
 
         MOV R4, R0
         
-        @chamando mmap
+        //chamando mmap
         MOV R0, #0
         LDR R1, =FPGA_SPAM
         LDR R1, [R1, #0]
@@ -72,11 +72,12 @@ mapeiaMemoria:
 
         SVC 0
 
+        //salva endereço virtual
         LDR R1, =FPGA_ADRS
         STR R0, [R1, #0]
 
-        MOV R2, #7              @Valor arbitrário p/ teste
-        STR R2, [R0, #0]
+        //MOV R2, #7              //Valor arbitrário p/ teste
+        //STR R2, [R0, #0]
 
 
         LDR R0, [SP, #0]
@@ -165,8 +166,10 @@ ler:
 
         BL write_instruction
         
-        @algum procedimento para ler entra aqui
-
+        LDR R1, =FPGA_ADRS
+        LDR R1, [R1, #0]
+        LDR R0, [R1, #0x10]
+        
         LDR LR, [SP, #0]
         ADD SP, SP, #4
 
@@ -336,17 +339,18 @@ write_instruction:
         LDR R1, [R1, #0]
         STR R0, [R1, #0]
         MOV R0, #1
-        STR R0, [R1, #1] //deslocamento p/ sinal de "activate_instruction"
+        STR R0, [R1, #0x30] //deslocamento p/ sinal de "activate_instruction"
 activate_loop:
-        LDR R0, [R1, #2] //deslocmento p/ sinal de "wait_signal"
+        LDR R0, [R1, #0x20] //deslocmento p/ sinal de "wait_signal"
         CMP R0, #0
         BEQ activate_loop
         
-        STR R0, [R1, #0] //deslocamento p/ sinal de "activate_instruction"
+        STR R0, [R1, #0x30] //deslocamento p/ sinal de "activate_instruction"
 wait_loop:
-        LDR R0, [R1, #2] //deslocmento p/ sinal de "wait_signal"
+        LDR R0, [R1, #0x20] //deslocmento p/ sinal de "wait_signal"
         CMP R0, #1
         BEQ wait_loop
+        
 
         LDR R1, [SP, #0]
         ADD SP, SP, #4
