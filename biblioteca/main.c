@@ -8,14 +8,14 @@ int main(){
 	printf("a\n");
 	mapeiaMemoria();
 	printf("b\n");
-	soma();
+	//soma();
 	printf("c\n");
 
 	signed char n0 = 0;
 	signed char n1 = 1;
 	int seletor = 0;
 	int x = 0;
-	while (x != 2) {
+	while (x != 14) {
 		x = iniciarPrograma(seletor, n0, n1);
 	}
 
@@ -38,15 +38,18 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\n[11] DETER4X4: ");
     printf("\n[12] DETER5X5: ");
     printf("\n[13] LER RESULT: ");
-    scanf("%d", &seletor);  
+    int sla;
+    scanf("%d %d", &seletor, &sla);  
 
     switch (seletor) {
         case 1:
-            ler(0,0,0);  
-            break;
+            seletor = ler(0,0,0);
+            printf("valor lido: %d\n", seletor);
+	    break;
         case 2:
-	        printf("wip\n");
-	        escrever(1,2,0,0,0);
+	    printf("wip\n");
+	    escrever(1,sla,0,0,0);
+        escrever(1,sla,1,0,0);
             //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
             //enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
             break;
@@ -81,8 +84,9 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             determinante5x5();    
             break;
         case 13:
-            ler(2,0,0);  
-            break;
+            seletor = ler(2,0,0);  
+            printf("valor lido: %d\n", seletor);
+	    break;
         default:
             printf("Opção inválida! Tente novamente.\n");
             break;

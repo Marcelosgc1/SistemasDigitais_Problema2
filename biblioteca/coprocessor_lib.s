@@ -50,7 +50,7 @@ mapeiaMemoria:
         STR R5, [SP, #20]
         STR R7, [SP, #24]
 
-        //abrindo dev/mem para acessar a func mmap2
+        @abrindo dev/mem para acessar a func mmap2
         LDR R0, =DEV_MEM
         MOV R1, #2
         MOV R2, #0
@@ -60,7 +60,7 @@ mapeiaMemoria:
 
         MOV R4, R0
         
-        //chamando mmap
+        @chamando mmap
         MOV R0, #0
         LDR R1, =FPGA_SPAM
         LDR R1, [R1, #0]
@@ -72,12 +72,12 @@ mapeiaMemoria:
 
         SVC 0
 
-        //salva endereço virtual
+        @salva endereço virtual
         LDR R1, =FPGA_ADRS
         STR R0, [R1, #0]
 
-        //MOV R2, #7              //Valor arbitrário p/ teste
-        //STR R2, [R0, #0]
+        @MOV R2, #7              @Valor arbitrário p/ teste
+        @STR R2, [R0, #0]
 
 
         LDR R0, [SP, #0]
@@ -92,7 +92,7 @@ mapeiaMemoria:
 	BX LR
         
 escrever:
-        //-----Verifica erro nos valores da matriz, linha e coluna-----
+        @-----Verifica erro nos valores da matriz, linha e coluna-----
         CMP R2, #2
         BHI wrong_call_error
 
@@ -106,7 +106,7 @@ escrever:
         ANDS R3, R3, #1
         BNE wrong_call_error
         
-        //-----Escrevendo parametros na instrução-----
+        @-----Escrevendo parametros na instrução-----
         LSL R0, R0, #20
 
         LSL R1, R1, #12
@@ -121,8 +121,8 @@ escrever:
         LSL R4, R4, #4
         ORR R0, R0, R4
 
-        //-----Opcode da instrução-----
-        ORR R0, R0, #1
+        @-----Opcode da instrução-----
+        ORR R0, R0, #2
 
         SUB SP, SP, #4
         STR LR, [SP, #0]
@@ -135,7 +135,7 @@ escrever:
         BX LR
 
 ler:
-        //-----Verifica erro nos valores da matriz, linha e coluna-----
+        @-----Verifica erro nos valores da matriz, linha e coluna-----
         CMP R0, #2
         BHI wrong_call_error
 
@@ -149,7 +149,7 @@ ler:
         ANDS R1, R1, #1
         BNE wrong_call_error
         
-        //-----Escrevendo parametros na instrução-----
+        @-----Escrevendo parametros na instrução-----
         LSL R0, R0, #10
 
         LSL R1, R1, #7
@@ -158,8 +158,8 @@ ler:
         LSL R2, R2, #4
         ORR R0, R0, R2
 
-        //-----Opcode da instrução-----
-        ORR R0, R0, #2
+        @-----Opcode da instrução-----
+        ORR R0, R0, #1
 
         SUB SP, SP, #4
         STR LR, [SP, #0]
@@ -168,7 +168,7 @@ ler:
         
         LDR R1, =FPGA_ADRS
         LDR R1, [R1, #0]
-        LDR R0, [R1, #0x40]
+        LDR R0, [R1, #0x10]
         
         LDR LR, [SP, #0]
         ADD SP, SP, #4
@@ -337,23 +337,23 @@ write_instruction:
 
         LDR R1, =FPGA_ADRS
         LDR R1, [R1, #0]
-        STR R0, [R1, #0x20]
-        /*
-
+        STR R0, [R1, #0]
         MOV R0, #1
-        STR R0, [R1, #0x30] //deslocamento p/ sinal de "activate_instruction"
+        STR R0, [R1, #0x20] @deslocamento p/ sinal de "activate_instruction"
 activate_loop:
-        LDR R0, [R1, #0x20] //deslocmento p/ sinal de "wait_signal"
+        LDR R0, [R1, #0x30] @deslocmento p/ sinal de "wait_signal"
         CMP R0, #0
         BEQ activate_loop
-        
-        STR R0, [R1, #0x30] //deslocamento p/ sinal de "activate_instruction"
+
+	MOV R0, #0
+
+        STR R0, [R1, #0x20] @deslocamento p/ sinal de "activate_instruction"
 wait_loop:
-        LDR R0, [R1, #0x20] //deslocmento p/ sinal de "wait_signal"
+        LDR R0, [R1, #0x30] @deslocmento p/ sinal de "wait_signal"
         CMP R0, #1
         BEQ wait_loop
         
-        */
+
         LDR R1, [SP, #0]
         ADD SP, SP, #4
 
