@@ -4,7 +4,7 @@ help:
 
 
 run:
-	@as coprocessor_lib.asm -o t.o
+	@as coprocessor_lib.s -o t.o
 	@gcc main.c t.o -z noexecstack -o exe -std=c99
 	@rm t.o
 	@./exe
