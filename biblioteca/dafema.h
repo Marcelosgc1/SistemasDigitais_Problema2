@@ -30,7 +30,7 @@ int escrever(signed char n0, signed char n1, unsigned char matriz, unsigned char
  */
 unsigned int ler(unsigned char matriz, unsigned char lin, unsigned char col);
 
-/* Lê dois números do endereço indicado 
+/* Lê um valor da matriz 
  * matriz: Indica qual matriz você vai escrever,
  * 0 => matriz A
  * 1 => matriz B
@@ -40,7 +40,7 @@ unsigned int ler(unsigned char matriz, unsigned char lin, unsigned char col);
  * 
  * retorno: -1 se mal sucedido, se bem sucedido o char desejado
  */
-unsigned int lerChar(unsigned char matriz, unsigned char lin, unsigned char col);
+signed char lerChar(unsigned char matriz, unsigned char lin, unsigned char col);
 
 /* Multiplica matriz A por char */
 void multiEscalar(char multi);

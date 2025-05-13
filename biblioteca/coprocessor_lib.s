@@ -208,8 +208,17 @@ lerChar:
 
         EOR R5, R1, R2
         ANDS R5, R5, #1
-        
+
+        BEQ correct_instruction
+        CMP R2, #0
+        BNE sub_adrs
+        SUB R1, R1, #1
+        MOV R2, #5
+sub_adrs:
+        SUB R2, R2, #1
+
         @-----Escrevendo parametros na instrução-----
+correct_instruction:
         LSL R0, R0, #10
 
         LSL R1, R1, #7
@@ -232,6 +241,7 @@ lerChar:
 
         @se r5 == 0: pega n0
         @se r5 == 1: pega n1
+        CMP R5, #0
         BEQ else_n0
         LSR R0, R0, #8
 else_n0:

@@ -14,8 +14,8 @@ int main(){
 	signed char n0 = 0;
 	signed char n1 = 1;
 	int seletor = 0;
-	int x = 0;
-	while (x != 14) {
+	int x = 1;
+	while (x != 0) {
 		x = iniciarPrograma(seletor, n0, n1);
 	}
 
@@ -38,19 +38,25 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\n[11] DETER4X4: ");
     printf("\n[12] DETER5X5: ");
     printf("\n[13] LER RESULT: ");
-    int sla;
+    int temp1, temp2, temp3;
     scanf("%d", &seletor);  
 
     switch (seletor) {
         case 1:
-            seletor = ler(0,0,0);
-            printf("valor lido: %d\n", seletor);
+            temp1 = ler(0,0,0);
+            temp2 = lerChar(0,0,0);
+            temp3 = lerChar(0,0,1);
+            printf("pacote de dados: %d\n", temp1);
+            printf("valor n0: %d\n", temp2);
+            printf("valor n1: %d\n", temp3);
 	    break;
         case 2:
-            printf("wip escreva valor ai :");
-            scanf("%d", &sla); 
-            escrever(1,sla,0,0,0);
-            escrever(1,sla,1,0,0);
+            printf("valor n0: ");
+            scanf("%d", &temp1); 
+            printf("valor n1: ");
+            scanf("%d", &temp2); 
+            escrever(temp1,temp2,0,0,0);
+            escrever(temp1,temp2,1,0,0);
             //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
             //enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
             break;
@@ -85,8 +91,12 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             determinante5x5();    
             break;
         case 13:
-            seletor = ler(2,0,0);  
-            printf("valor lido: %d\n", seletor);
+            temp1 = ler(2,0,0);
+            temp2 = lerChar(2,0,0);
+            temp3 = lerChar(2,0,1);
+            printf("pacote de dados: %d\n", temp1);
+            printf("valor n0: %d\n", temp2);
+            printf("valor n1: %d\n", temp3);
 	    break;
         default:
             printf("Opção inválida! Tente novamente.\n");
