@@ -39,7 +39,7 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\n[12] DETER5X5: ");
     printf("\n[13] LER RESULT: ");
     int sla;
-    scanf("%d %d", &seletor, &sla);  
+    scanf("%d", &seletor);  
 
     switch (seletor) {
         case 1:
@@ -47,7 +47,8 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             printf("valor lido: %d\n", seletor);
 	    break;
         case 2:
-	    printf("wip\n");
+	    printf("wip escreva valor ai :");
+        scanf("%d", &sla); 
 	    escrever(1,sla,0,0,0);
         escrever(1,sla,1,0,0);
             //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A

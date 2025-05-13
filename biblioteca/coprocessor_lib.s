@@ -102,8 +102,11 @@ escrever:
         CMP R4, #4
         BHI wrong_call_error
 
-        EOR R3, R3, R4
-        ANDS R3, R3, #1
+        SUB SP, SP, #4
+        STR R5, [SP, #0]
+
+        EOR R5, R3, R4
+        ANDS R5, R5, #1
         BNE wrong_call_error
         
         @-----Escrevendo parametros na instrução-----
@@ -130,7 +133,8 @@ escrever:
         BL write_instruction
         
         LDR LR, [SP, #0]
-        ADD SP, SP, #4
+        LDR R5, [SP, #4]
+        ADD SP, SP, #8
 
         BX LR
 
@@ -145,8 +149,11 @@ ler:
         CMP R2, #4
         BHI wrong_call_error
 
-        EOR R1, R1, R2
-        ANDS R1, R1, #1
+        SUB SP, SP, #4
+        STR R5, [SP, #0]
+
+        EOR R5, R1, R2
+        ANDS R5, R5, #1
         BNE wrong_call_error
         
         @-----Escrevendo parametros na instrução-----
@@ -171,14 +178,69 @@ ler:
         LDR R0, [R1, #0x10]
         
         LDR LR, [SP, #0]
-        ADD SP, SP, #4
+        LDR R5, [SP, #4]
+        ADD SP, SP, #8
 
         BX LR
 
 
 wrong_call_error:
         MOV R0, #-1
+
+        LDR R5, [SP, #0]
+        ADD SP, SP, #4
+
+        BX LR
+
+lerChar:
+        @-----Verifica erro nos valores da matriz, linha e coluna-----
+        CMP R0, #2
+        BHI wrong_call_error
+
+        CMP R1, #4
+        BHI wrong_call_error
+
+        CMP R2, #4
+        BHI wrong_call_error
+
+        SUB SP, SP, #4
+        STR R5, [SP, #0]
+
+        EOR R5, R1, R2
+        ANDS R5, R5, #1
         
+        @-----Escrevendo parametros na instrução-----
+        LSL R0, R0, #10
+
+        LSL R1, R1, #7
+        ORR R0, R0, R1
+        
+        LSL R2, R2, #4
+        ORR R0, R0, R2
+
+        @-----Opcode da instrução-----
+        ORR R0, R0, #1
+
+        SUB SP, SP, #4
+        STR LR, [SP, #0]
+
+        BL write_instruction
+        
+        LDR R1, =FPGA_ADRS
+        LDR R1, [R1, #0]
+        LDR R0, [R1, #0x10]
+
+        @se r5 == 0: pega n0
+        @se r5 == 1: pega n1
+        BEQ else_n0
+        LSR R0, R0, #8
+else_n0:
+        AND R0, R0, #255
+
+        LDR LR, [SP, #0]
+        LDR R5, [SP, #4]
+        ADD SP, SP, #8
+
         BX LR
 
 
