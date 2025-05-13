@@ -8,6 +8,9 @@
 .global ler
 .type ler, %function
 
+.global lerChar
+.type lerChar, %function
+
 .global soma
 .type soma, %function
 
@@ -206,8 +209,11 @@ lerChar:
         SUB SP, SP, #4
         STR R5, [SP, #0]
 
-        EOR R5, R1, R2
-        ANDS R5, R5, #1
+        @R1 é linha
+        @R2 é coluna
+
+        EOR R5, R1, R2 @Xor salvo em R5
+        ANDS R5, R5, #1  
 
         BEQ correct_instruction
         CMP R2, #0
@@ -241,6 +247,7 @@ correct_instruction:
 
         @se r5 == 0: pega n0
         @se r5 == 1: pega n1
+        
         CMP R5, #0
         BEQ else_n0
         LSR R0, R0, #8
@@ -409,10 +416,12 @@ write_instruction:
 
         LDR R1, =FPGA_ADRS
         LDR R1, [R1, #0]
-        STR R0, [R1, #0]
+        STR R0, [R1, #0] 
         MOV R0, #1
         STR R0, [R1, #0x20] @deslocamento p/ sinal de "activate_instruction"
 activate_loop:
+        @Fica no loop até o wait_signal for 1
+        
         LDR R0, [R1, #0x30] @deslocmento p/ sinal de "wait_signal"
         CMP R0, #0
         BEQ activate_loop
