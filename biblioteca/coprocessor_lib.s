@@ -8,8 +8,8 @@
 .global ler
 .type ler, %function
 
-.global lerChar
-.type lerChar, %function
+.global lerIndice
+.type lerIndice, %function
 
 .global soma
 .type soma, %function
@@ -195,7 +195,7 @@ wrong_call_error:
 
         BX LR
 
-lerChar:
+lerIndice:
         @-----Verifica erro nos valores da matriz, linha e coluna-----
         CMP R0, #2
         BHI wrong_call_error

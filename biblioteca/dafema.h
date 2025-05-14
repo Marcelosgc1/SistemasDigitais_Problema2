@@ -40,7 +40,7 @@ unsigned int ler(unsigned char matriz, unsigned char lin, unsigned char col);
  * 
  * retorno: -1 se mal sucedido, se bem sucedido o char desejado
  */
-signed char lerChar(unsigned char matriz, unsigned char lin, unsigned char col);
+signed char lerIndice(unsigned char matriz, unsigned char lin, unsigned char col);
 
 /* Multiplica matriz A por char */
 void multiEscalar(char multi);

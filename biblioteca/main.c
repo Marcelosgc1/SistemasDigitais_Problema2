@@ -44,8 +44,8 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     switch (seletor) {
         case 1:
             temp1 = ler(0,0,0);
-            temp2 = lerChar(0,0,0);
-            temp3 = lerChar(0,0,1);
+            temp2 = lerIndice(0,0,0);
+            temp3 = lerIndice(0,0,1);
             printf("pacote de dados: %d\n", temp1);
             printf("valor n0: %d\n", temp2);
             printf("valor n1: %d\n", temp3);
@@ -92,8 +92,8 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             break;
         case 13:
             temp1 = ler(2,0,0);
-            temp2 = lerChar(2,0,0);
-            temp3 = lerChar(2,0,1);
+            temp2 = lerIndice(2,0,0);
+            temp3 = lerIndice(2,0,1);
             printf("pacote de dados: %d\n", temp1);
             printf("valor n0: %d\n", temp2);
             printf("valor n1: %d\n", temp3);
