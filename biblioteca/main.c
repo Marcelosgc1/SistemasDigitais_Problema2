@@ -7,7 +7,7 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1);
 
 int main(){
 	printf("a\n");
-	//mapeiaMemoria();
+	mapeiaMemoria();
 	printf("b\n");
 	//soma();
 	printf("c\n");
@@ -39,8 +39,9 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\n[11] DETER4X4: ");
     printf("\n[12] DETER5X5: ");
     printf("\n[13] LER RESULT: ");
-    int temp1, temp2, temp3;
-    scanf("%d", &seletor);  
+    int temporario;
+    signed char temp1, temp2, temp3;
+    scanf("%d", &seletor);
     endereco *meu_endereco = malloc(sizeof(endereco)); 
 
     // meu_endereco->matriz_id = 1;
@@ -63,11 +64,13 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             printf("valor n0: ");
             scanf("%d", &temp1); 
             printf("valor n1: ");
-            scanf("%d", &temp2); 
-            *meu_endereco = (endereco) {0,0,0};
+            scanf("%d", &temporario);
+            temp2 = (signed char) temporario;
+
+            *meu_endereco = (endereco) {0,0,2};
             escrever(temp1, temp2, meu_endereco);
 
-            *meu_endereco = (endereco) {1,0,0};
+            *meu_endereco = (endereco) {1,0,2};
             escrever(temp1, temp2, meu_endereco);
             //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
             //enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B

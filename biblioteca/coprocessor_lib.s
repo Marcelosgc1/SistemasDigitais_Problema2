@@ -123,6 +123,7 @@ escrever:
         @-----Escrevendo parametros na instrução-----
         LSL R0, R0, #20
 
+        AND R1, R1, #255
         LSL R1, R1, #12
         ORR R0, R0, R1
 
