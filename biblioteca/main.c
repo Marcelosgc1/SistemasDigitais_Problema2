@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "dafema.h"
 
-
+void escrever5x5(endereco *adrs);
 int iniciarPrograma(int seletor, signed char n0, signed char n1);
 
 int main(){
@@ -42,19 +42,18 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     int temporario;
     signed char temp1, temp2, temp3;
     scanf("%d", &seletor);
-    endereco *meu_endereco = malloc(sizeof(endereco)); 
-
-    // meu_endereco->matriz_id = 1;
-    // meu_endereco->linha = 0;
-    // meu_endereco->coluna = 2;
+    endereco *meuEndereco = malloc(sizeof(endereco)); 
+    // meuEndereco->matriz_id = 1;
+    // meuEndereco->linha = 0;
+    // meuEndereco->coluna = 2;
 
     switch (seletor) {
         case 1:
-            *meu_endereco = (endereco) {0,0,0};
-            temp1 = ler(meu_endereco);
-            temp2 = lerIndice(meu_endereco);
-            meu_endereco->coluna = 1;
-            temp3 = lerIndice(meu_endereco);
+            *meuEndereco = (endereco) {0,0,0};
+            temp1 = ler(meuEndereco);
+            temp2 = lerIndice(meuEndereco);
+            meuEndereco->coluna = 1;
+            temp3 = lerIndice(meuEndereco);
 
             printf("pacote de dados: %d\n", temp1);
             printf("valor n0: %d\n", temp2);
@@ -67,11 +66,11 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             scanf("%d", &temporario);
             temp2 = (signed char) temporario;
 
-            *meu_endereco = (endereco) {0,0,2};
-            escrever(temp1, temp2, meu_endereco);
+            *meuEndereco = (endereco) {0,0,2};
+            escrever(temp1, temp2, meuEndereco);
 
-            *meu_endereco = (endereco) {1,0,2};
-            escrever(temp1, temp2, meu_endereco);
+            *meuEndereco = (endereco) {1,0,2};
+            escrever(temp1, temp2, meuEndereco);
             //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
             //enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
             break;
@@ -106,21 +105,46 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             determinante5x5();    
             break;
         case 13:
-            *meu_endereco = (endereco) {2,0,0};
-            temp1 = ler(meu_endereco);
+            *meuEndereco = (endereco) {2,0,0};
+            temp1 = ler(meuEndereco);
 
-            temp2 = lerIndice(meu_endereco);
+            temp2 = lerIndice(meuEndereco);
             
-            *meu_endereco = (endereco) {2,0,1};
-            temp3 = lerIndice(meu_endereco);
+            *meuEndereco = (endereco) {2,0,1};
+            temp3 = lerIndice(meuEndereco);
 
             printf("pacote de dados: %d\n", temp1);
             printf("valor n0: %d\n", temp2);
             printf("valor n1: %d\n", temp3);
-	    break;
+	        break;
+        case 14:
+            *meuEndereco = (endereco) {0,0,0};
+            escrever5x5(meuEndereco);
+            meuEndereco->matriz_id = 1;
+            escrever5x5(meuEndereco);
+            break;
         default:
             printf("Opção inválida! Tente novamente.\n");
             break;
     }
     return seletor;
+}
+
+
+void escrever5x5(endereco *adrs){
+    int n = 1;
+    do{
+        escrever(n, -n, adrs);
+        n = n + 2;
+        adrs->coluna = adrs->coluna + 2;
+        if (adrs->coluna > 4){
+            adrs->coluna = adrs->coluna % 5;
+            adrs->linha = adrs->linha + 1;
+        }
+        printf("%d/%d\n", adrs->linha, adrs->coluna);
+    }while (adrs->linha < 5 && adrs->coluna < 5);
+    adrs->coluna = 0;
+    adrs->linha = 0;  
+    
+
 }

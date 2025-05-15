@@ -5,6 +5,9 @@
 .global escrever
 .type escrever, %function
 
+.global escreverIndice
+.type escreverIndice, %function
+
 .global ler
 .type ler, %function
 
@@ -150,6 +153,35 @@ escrever:
         LDR R5, [SP, #12]
         ADD SP, SP, #16
 
+        BX LR
+
+escreverIndice:
+        SUB SP, SP, #16
+        STR SP, [SP, #0]
+        STR R5, [SP, #4]
+        STR R4, [SP, #8]
+        STR R3, [SP, #12]
+
+        MOV R5, R0
+        MOV R0, R1
+
+        EOR R5, R3, R4
+        ANDS R5, R5, #1
+
+        BL ler
+
+
+        @R5: numero p/ escrever
+        @R1: endereco enviado
+        @R0: numero presente na fpga
+
+
+        LDR SP, [SP, #0]
+        LDR SP, [SP, #4]
+        LDR SP, [SP, #8]
+        LDR SP, [SP, #12]
+        ADD SP, SP, #16
+        
         BX LR
 
 ler:

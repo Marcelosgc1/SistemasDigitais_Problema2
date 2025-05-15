@@ -2,14 +2,17 @@
 #define DAFEMA_H
 
 /*
- * matriz_id: Indica qual matriz você vai escrever,
+ * Stuct que indica um indice de uma matriz
+ *
+ * matriz_id: unsig char
  * 0 => matriz A
  * 1 => matriz B
  * 2 => matriz C
- * linha: Linha que os valores serão escritos
- * coluna: Coluna que os valores serão escritos
+ * 
+ * linha: unsig char
+ * coluna: unsig char
 */
-typedef struct {
+typedef struct dafemaEndereco{
     unsigned char matriz_id;
     unsigned char linha;
     unsigned char coluna;
@@ -19,13 +22,21 @@ typedef struct {
 void mapeiaMemoria();
 
 /* Escreve dois números no endereço indicado
- * n0: Valor escrito da linha e coluna indicadas
+ * n0: Valor escrito no endereço indicado
  * n1: Valor escrito no próximo espaço da matriz
  * endereco: ponteiro p/ struct cujo dados serão escritos
  * 
  * retorno: -1 se mal sucedido, 0 se bem sucedido
  */
 int escrever(signed char n0, signed char n1, endereco *endereco);
+
+/* Escreve dois números no endereço indicado
+ * num: Valor escrito no endereço indicado
+ * endereco: ponteiro p/ struct cujo dados serão escritos
+ * 
+ * retorno: -1 se mal sucedido, 0 se bem sucedido
+ */
+int escreverIndice(signed char num, endereco *endereco);
 
 /* Lê dois números no endereço indicado
  * endereco: ponteiro p/ struct cujo dados serão lido
