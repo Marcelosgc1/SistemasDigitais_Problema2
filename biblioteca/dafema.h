@@ -1,46 +1,45 @@
 #ifndef DAFEMA_H
 #define DAFEMA_H
 
+/*
+ * matriz_id: Indica qual matriz você vai escrever,
+ * 0 => matriz A
+ * 1 => matriz B
+ * 2 => matriz C
+ * linha: Linha que os valores serão escritos
+ * coluna: Coluna que os valores serão escritos
+*/
+typedef struct {
+    unsigned char matriz_id;
+    unsigned char linha;
+    unsigned char coluna;
+} endereco;
+
 /* Mapeia a memória para o endereço base do AXI Bridge*/
 void mapeiaMemoria();
 
 /* Escreve dois números no endereço indicado
  * n0: Valor escrito da linha e coluna indicadas
  * n1: Valor escrito no próximo espaço da matriz
- * matriz: Indica qual matriz você vai escrever,
- * 0 => matriz A
- * 1 => matriz B
- * 2 => matriz C
- * lin: Linha que os valores serão escritos
- * col: Coluna que os valores serão escritos
+ * endereco: ponteiro p/ struct cujo dados serão escritos
  * 
  * retorno: -1 se mal sucedido, 0 se bem sucedido
  */
-int escrever(signed char n0, signed char n1, unsigned char matriz, unsigned char lin, unsigned char col);
+int escrever(signed char n0, signed char n1, endereco *endereco);
 
-/* Lê dois números do endereço indicado 
- * matriz: Indica qual matriz você vai escrever,
- * 0 => matriz A
- * 1 => matriz B
- * 2 => matriz C
- * lin: Linha que os valores serão escritos
- * col: Coluna que os valores serão escritos
+/* Lê dois números no endereço indicado
+ * endereco: ponteiro p/ struct cujo dados serão lido
  * 
- * retorno: -1 se mal sucedido, se bem sucedido um pacote de 16 bits contendo 2 chars
+ * retorno: -1 se mal sucedido, se não, valor correto lido
  */
-unsigned int ler(unsigned char matriz, unsigned char lin, unsigned char col);
+unsigned int ler(endereco *endereco);
 
 /* Lê um valor da matriz 
- * matriz: Indica qual matriz você vai escrever,
- * 0 => matriz A
- * 1 => matriz B
- * 2 => matriz C
- * lin: Linha que os valores serão escritos
- * col: Coluna que os valores serão escritos
+ * endereco: ponteiro p/ struct cujo dados serão lido
  * 
- * retorno: -1 se mal sucedido, se bem sucedido o char desejado
+ * retorno: -1 se mal sucedido, se não, valor correto lido
  */
-signed char lerIndice(unsigned char matriz, unsigned char lin, unsigned char col);
+signed char lerIndice(endereco *endereco);
 
 /* Multiplica matriz A por char */
 void multiEscalar(char multi);

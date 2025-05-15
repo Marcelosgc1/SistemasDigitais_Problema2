@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "dafema.h"
 
 
@@ -6,7 +7,7 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1);
 
 int main(){
 	printf("a\n");
-	mapeiaMemoria();
+	//mapeiaMemoria();
 	printf("b\n");
 	//soma();
 	printf("c\n");
@@ -40,12 +41,20 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\n[13] LER RESULT: ");
     int temp1, temp2, temp3;
     scanf("%d", &seletor);  
+    endereco *meu_endereco = malloc(sizeof(endereco)); 
+
+    // meu_endereco->matriz_id = 1;
+    // meu_endereco->linha = 0;
+    // meu_endereco->coluna = 2;
 
     switch (seletor) {
         case 1:
-            temp1 = ler(0,0,0);
-            temp2 = lerIndice(0,0,0);
-            temp3 = lerIndice(0,0,1);
+            *meu_endereco = (endereco) {0,0,0};
+            temp1 = ler(meu_endereco);
+            temp2 = lerIndice(meu_endereco);
+            meu_endereco->coluna = 1;
+            temp3 = lerIndice(meu_endereco);
+
             printf("pacote de dados: %d\n", temp1);
             printf("valor n0: %d\n", temp2);
             printf("valor n1: %d\n", temp3);
@@ -55,8 +64,11 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             scanf("%d", &temp1); 
             printf("valor n1: ");
             scanf("%d", &temp2); 
-            escrever(temp1,temp2,0,0,0);
-            escrever(temp1,temp2,1,0,0);
+            *meu_endereco = (endereco) {0,0,0};
+            escrever(temp1, temp2, meu_endereco);
+
+            *meu_endereco = (endereco) {1,0,0};
+            escrever(temp1, temp2, meu_endereco);
             //enviarMatriz(n0, n1, 0, addressA, 2); // Escrevendo números na matriz A
             //enviarMatriz(n0, n1, 1, addressB, 2); // Escrevendo números na matriz B
             break;
@@ -91,9 +103,14 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             determinante5x5();    
             break;
         case 13:
-            temp1 = ler(2,0,0);
-            temp2 = lerIndice(2,0,0);
-            temp3 = lerIndice(2,0,1);
+            *meu_endereco = (endereco) {2,0,0};
+            temp1 = ler(meu_endereco);
+
+            temp2 = lerIndice(meu_endereco);
+            
+            *meu_endereco = (endereco) {2,0,1};
+            temp3 = lerIndice(meu_endereco);
+
             printf("pacote de dados: %d\n", temp1);
             printf("valor n0: %d\n", temp2);
             printf("valor n1: %d\n", temp3);
