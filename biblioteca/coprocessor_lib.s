@@ -207,7 +207,7 @@ odd_instruction:
         LSR R4, R4, #3
         LSL R4, R4, #3
 
-        ORR R4, R4, #4
+        ORR R4, R4, #5
         
 
 sub_col:
