@@ -157,29 +157,81 @@ escrever:
 
 escreverIndice:
         SUB SP, SP, #16
-        STR SP, [SP, #0]
-        STR R5, [SP, #4]
-        STR R4, [SP, #8]
-        STR R3, [SP, #12]
+        STR R3, [SP, #0]
+        STR R4, [SP, #4]
+        STR R5, [SP, #8]
+        STR LR, [SP, #12]
 
         MOV R5, R0
         MOV R0, R1
 
-        EOR R5, R3, R4
-        ANDS R5, R5, #1
-
         BL ler
 
+        SUB SP, SP, #8
+        STR R6, [SP, #0]
+        STR R2, [SP, #4]
+
+        LDR R3, [R1, #1]
+        LDR R4, [R1, #2]
 
         @R5: numero p/ escrever
-        @R1: endereco enviado
+        @R1: endereco struct
         @R0: numero presente na fpga
+        @R3: linha
+        @R4: coluna
+
+        MOV R2, R1 @R2 = struct
+
+        EOR R6, R3, R4
+        ANDS R6, R6, #1
+
+        
+        BNE odd_instruction       
+        @se R6 == 0; par
+        
+        
+        
+        LSR R0, R0, #8 @R0 = n1
+        MOV R1, R0     @R1 = n1
+        MOV R0, R5     @R0 = n0
+        B continue_to_write
+
+      
+odd_instruction:
+        @se R6 == 0; impar
+        AND R6, R4, #7
+        CMP R6, #0
+
+        BNE sub_col
+        SUB R3, R3, #1
+        LSR R4, R4, #3
+        LSL R4, R4, #3
+
+        ORR R4, R4, #4
+        
+
+sub_col:
+        SUB R4, R4, #1
+
+        AND R0, R0, #255
+        MOV R1, R5
+
+        STR R3, [R2, #1]
+        STR R4, [R2, #2]
 
 
-        LDR SP, [SP, #0]
-        LDR SP, [SP, #4]
-        LDR SP, [SP, #8]
-        LDR SP, [SP, #12]
+continue_to_write:
+
+        BL escrever
+        
+        LDR R6, [SP, #0]
+        LDR R2, [SP, #4]
+        ADD SP, SP, #8
+
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
         ADD SP, SP, #16
         
         BX LR
