@@ -95,10 +95,11 @@ mapeiaMemoria:
 	BX LR
         
 escrever:
-        SUB SP, SP, #12
+        SUB SP, SP, #16
         STR R3, [SP, #0]
         STR R4, [SP, #4]
         STR R5, [SP, #8]
+        STR LR, [SP, #12]
 
         LDR R4, [R2, #2]
         AND R4, R4, #255
@@ -147,10 +148,11 @@ escrever:
         
         BL write_instruction
         
-        LDR LR, [SP, #0]
-        LDR R3, [SP, #4]
-        LDR R4, [SP, #8]
-        LDR R5, [SP, #12]
+        
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
         ADD SP, SP, #16
 
         BX LR
@@ -162,35 +164,26 @@ escreverIndice:
         STR R5, [SP, #8]
         STR LR, [SP, #12]
 
+        LDR R3, [R1, #1]
+        LDR R4, [R1, #2]
+
+        EOR R5, R3, R4
+        ANDS R5, R5, #1
+
+        
+        BNE odd_instruction       
+        @se R5 == 0; par
+        
         MOV R5, R0
         MOV R0, R1
 
         BL ler
 
-        SUB SP, SP, #8
-        STR R6, [SP, #0]
-        STR R2, [SP, #4]
-
-        LDR R3, [R1, #1]
-        LDR R4, [R1, #2]
-
-        @R5: numero p/ escrever
-        @R1: endereco struct
-        @R0: numero presente na fpga
-        @R3: linha
-        @R4: coluna
-
-        MOV R2, R1 @R2 = struct
-
-        EOR R6, R3, R4
-        ANDS R6, R6, #1
-
+        SUB SP, SP, #4
+        STR R2, [SP, #0]
         
-        BNE odd_instruction       
-        @se R6 == 0; par
-        
-        
-        
+        MOV R2, R1
+
         LSR R0, R0, #8 @R0 = n1
         MOV R1, R0     @R1 = n1
         MOV R0, R5     @R0 = n0
@@ -199,8 +192,8 @@ escreverIndice:
       
 odd_instruction:
         @se R6 == 0; impar
-        AND R6, R4, #7
-        CMP R6, #0
+        AND R5, R4, #7
+        CMP R5, #0
 
         BNE sub_col
         SUB R3, R3, #1
@@ -213,20 +206,28 @@ odd_instruction:
 sub_col:
         SUB R4, R4, #1
 
+        MOV R5, R0
+        MOV R0, R1
+
+        BL ler
+
         AND R0, R0, #255
+
+        STR R3, [R1, #1]
+        STR R4, [R1, #2]
+
+        SUB SP, SP, #4
+        STR R2, [SP, #0]
+        
+        MOV R2, R1
         MOV R1, R5
 
-        STR R3, [R2, #1]
-        STR R4, [R2, #2]
-
-
 continue_to_write:
-
+        
         BL escrever
         
-        LDR R6, [SP, #0]
-        LDR R2, [SP, #4]
-        ADD SP, SP, #8
+        LDR R2, [SP, #0]
+        ADD SP, SP, #4
 
         LDR R3, [SP, #0]
         LDR R4, [SP, #4]
@@ -237,10 +238,11 @@ continue_to_write:
         BX LR
 
 ler:
-        SUB SP, SP, #12
+        SUB SP, SP, #16
         STR R3, [SP, #0]
         STR R4, [SP, #4]
         STR R5, [SP, #8]
+        STR LR, [SP, #12]
 
         LDR R4, [R0, #2]
         AND R4, R4, #255
@@ -255,7 +257,11 @@ ler:
         CMP R0, #2
         BHI wrong_call_error
 
-        CMP R3, #4
+        CMP R3, #LDR LR, [SP, #0]
+        LDR R3, [SP, #4]
+        LDR R4, [SP, #8]
+        LDR R5, [SP, #12]
+        ADD SP, SP, #164
         BHI wrong_call_error
 
         CMP R4, #4
@@ -286,10 +292,10 @@ ler:
         LDR R3, [R3, #0]
         LDR R0, [R3, #0x10]
         
-        LDR LR, [SP, #0]
-        LDR R3, [SP, #4]
-        LDR R4, [SP, #8]
-        LDR R5, [SP, #12]
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
         ADD SP, SP, #16
 
         BX LR
@@ -301,15 +307,19 @@ wrong_call_error:
         LDR R3, [SP, #0]
         LDR R4, [SP, #4]
         LDR R5, [SP, #8]
-        ADD SP, SP, #12
+        LDR LR, [SP, #12]
+        ADD SP, SP, #16
 
-        BX LR
+        MOV R7, #1
+        SVC 0
+
 
 lerIndice:
-        SUB SP, SP, #12
+        SUB SP, SP, #16
         STR R3, [SP, #0]
         STR R4, [SP, #4]
         STR R5, [SP, #8]
+        STR LR, [SP, #12]
 
         LDR R4, [R0, #2]
         AND R4, R4, #255
@@ -378,10 +388,10 @@ correct_instruction:
 else_n0:
         AND R0, R0, #255
 
-        LDR LR, [SP, #0]
-        LDR R3, [SP, #4]
-        LDR R4, [SP, #8]
-        LDR R5, [SP, #12]
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
         ADD SP, SP, #16
 
         BX LR
