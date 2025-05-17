@@ -19,7 +19,10 @@ typedef struct dafemaEndereco{
 } endereco;
 
 /* Mapeia a memória para o endereço base do AXI Bridge*/
-void mapeiaMemoria();
+void iniciarDafema();
+
+/* Libera memória do endereço para o AXI Bridge*/
+void encerrarDafema();
 
 /* Escreve dois números no endereço indicado
  * n0: Valor escrito no endereço indicado

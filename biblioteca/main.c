@@ -12,7 +12,7 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1);
 
 int main(){
 	printf("a\n");
-	mapeiaMemoria();
+	iniciarDafema();
 	printf("b\n");
 	//soma();
 	printf("c\n");
@@ -25,6 +25,7 @@ int main(){
 		x = iniciarPrograma(seletor, n0, n1);
 	}
 
+    encerrarDafema();
 	return 0;
 };
 

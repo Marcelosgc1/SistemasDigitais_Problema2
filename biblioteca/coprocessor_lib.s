@@ -1,6 +1,9 @@
 .section .text
-.global mapeiaMemoria
-.type mapeiaMemoria, %function
+.global iniciarDafema
+.type iniciarDafema, %function
+
+.global encerrarDafema
+.type encerrarDafema, %function
 
 .global escrever
 .type escrever, %function
@@ -46,7 +49,7 @@
 
 .global write_instruction
 
-mapeiaMemoria:
+iniciarDafema:
         SUB SP, SP, #28
         STR R0, [SP, #0]
         STR R1, [SP, #4]
@@ -64,7 +67,10 @@ mapeiaMemoria:
 
         SVC 0
 
+        @salva FD
         MOV R4, R0
+        LDR R0, =FILE_DESCRIPTOR
+        STR R4, [R0, #0]
         
         @chamando mmap
         MOV R0, #0
@@ -93,7 +99,37 @@ mapeiaMemoria:
         ADD SP, SP, #28
 
 	BX LR
-        
+
+
+encerrarDafema:
+        SUB SP, SP, #12
+        STR R0, [SP, #0]
+        STR R1, [SP, #4]
+        STR R7, [SP, #8]
+
+        @chamando munmap
+        LDR R0, =FPGA_ADRS
+        LDR R0, [R0, #0]
+        LDR R1, =FPGA_SPAM
+        LDR R1, [R1, #0]
+        MOV R7, #91
+        SVC 0
+
+        @fechar arquivo DEV_MEM
+        LDR R0, =FILE_DESCRIPTOR
+        LDR R0, [R0, #0]
+        MOV R7, #6
+        SVC 0
+
+        @ restaurar
+        LDR R0, [SP, #0]
+        LDR R1, [SP, #4]
+        LDR R7, [SP, #8]
+        ADD SP, SP, #12
+
+        BX LR
+
+
 escrever:
         SUB SP, SP, #16
         STR R3, [SP, #0]
@@ -572,6 +608,9 @@ FPGA_SPAM:
         .word 0x1000
 
 FPGA_ADRS:
+        .space 4;
+
+FILE_DESCRIPTOR:
         .space 4;
 
 FPGA_BRIDGE:
