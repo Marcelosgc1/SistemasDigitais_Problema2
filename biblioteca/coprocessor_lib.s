@@ -142,9 +142,7 @@ escrever:
 
         @-----Opcode da instrução-----
         ORR R0, R0, #2
-
-        SUB SP, SP, #4
-        STR LR, [SP, #0]
+        
         
         BL write_instruction
         
@@ -206,18 +204,18 @@ odd_instruction:
 sub_col:
         SUB R4, R4, #1
 
+        STR R3, [R1, #1]
+        STR R4, [R1, #2]
+
         MOV R5, R0
         MOV R0, R1
 
         BL ler
 
-        AND R0, R0, #255
-
-        STR R3, [R1, #1]
-        STR R4, [R1, #2]
-
         SUB SP, SP, #4
         STR R2, [SP, #0]
+
+        AND R0, R0, #255
         
         MOV R2, R1
         MOV R1, R5
@@ -257,11 +255,7 @@ ler:
         CMP R0, #2
         BHI wrong_call_error
 
-        CMP R3, #LDR LR, [SP, #0]
-        LDR R3, [SP, #4]
-        LDR R4, [SP, #8]
-        LDR R5, [SP, #12]
-        ADD SP, SP, #164
+        CMP R3, #4
         BHI wrong_call_error
 
         CMP R4, #4
@@ -282,9 +276,6 @@ ler:
 
         @-----Opcode da instrução-----
         ORR R0, R0, #1
-
-        SUB SP, SP, #4
-        STR LR, [SP, #0]
 
         BL write_instruction
         
@@ -340,8 +331,6 @@ lerIndice:
         CMP R4, #4
         BHI wrong_call_error
 
-        SUB SP, SP, #4
-        STR R5, [SP, #0]
 
         @R3 é linha
         @R4 é coluna
@@ -369,9 +358,6 @@ correct_instruction:
 
         @-----Opcode da instrução-----
         ORR R0, R0, #1
-
-        SUB SP, SP, #4
-        STR LR, [SP, #0]
 
         BL write_instruction
         

@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "dafema.h"
+#include "txt.h"
 
+void new5(endereco *adrs);
 void escrever5x5(endereco *adrs);
+void escrever4x4(endereco *adrs);
+void escrever3x3(endereco *adrs);
+void escrever2x2(endereco *adrs);
 int iniciarPrograma(int seletor, signed char n0, signed char n1);
 
 int main(){
@@ -39,18 +44,22 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\n[11] DETER4X4: ");
     printf("\n[12] DETER5X5: ");
     printf("\n[13] LER RESULT: ");
-    int temporario;
+    printf("\n[14] DIGITE O TAMANHO DA MATRIZ: ");
+    printf("\n OPÇÃO: ");
+    int temporario, size;
     signed char temp1, temp2, temp3;
     scanf("%d", &seletor);
-    endereco *meuEndereco = malloc(sizeof(endereco)); 
+    endereco *meuEndereco = malloc(sizeof(endereco));
     // meuEndereco->matriz_id = 1;
     // meuEndereco->linha = 0;
     // meuEndereco->coluna = 2;
+
 
     switch (seletor) {
         case 1:
             *meuEndereco = (endereco) {0,0,0};
             temp1 = ler(meuEndereco);
+	    //printf("aaa\n")
             temp2 = lerIndice(meuEndereco);
             meuEndereco->coluna = 1;
             temp3 = lerIndice(meuEndereco);
@@ -115,13 +124,42 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
 
             printf("pacote de dados: %d\n", temp1);
             printf("valor n0: %d\n", temp2);
-            printf("valor n1: %d\n", temp3);
+            printf(">linha < 5 && adrs->coluna < 5valor n1: %d\n", temp3);
 	        break;
         case 14:
-            *meuEndereco = (endereco) {0,0,0};
-            escrever5x5(meuEndereco);
-            meuEndereco->matriz_id = 1;
-            escrever5x5(meuEndereco);
+            scanf("%d", &size);
+            switch(size){
+                case 5:
+                    *meuEndereco = (endereco) {0,0,0};
+                    escrever5x5(meuEndereco);
+                    *meuEndereco = (endereco) {1,0,0};
+                    escrever5x5(meuEndereco);
+                    break;
+                case 4:
+                    *meuEndereco = (endereco) {0,0,0};
+                    escrever4x4(meuEndereco);
+                    meuEndereco->matriz_id = 1;
+                    escrever4x4(meuEndereco);
+                    break;
+                case 3:
+                    *meuEndereco = (endereco) {0,0,0};
+                    escrever3x3(meuEndereco);
+                    meuEndereco->matriz_id = 1;
+                    escrever3x3(meuEndereco);
+                    break;
+                case 2:
+                    *meuEndereco = (endereco) {0,0,0};
+                    escrever4x4(meuEndereco);
+                    meuEndereco->matriz_id = 1;
+                    escrever4x4(meuEndereco);
+                    break;
+                default:
+                    printf("Só tamanho 2, 3, 4 ou 5");
+                    break;
+            }
+            break;
+	    case 15:
+            new5(meuEndereco);
             break;
         default:
             printf("Opção inválida! Tente novamente.\n");
@@ -132,9 +170,12 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
 
 
 void escrever5x5(endereco *adrs){
-    int n = 1;
+    signed char *dados = ler_arquivo_txt("teste.txt");
+
+    int n = 0;
     do{
-        escrever(n, -n, adrs);
+        escrever(dados[n], dados[n+1], adrs);
+        printf("%d\n\n",dados[n]);
         n = n + 2;
         adrs->coluna = adrs->coluna + 2;
         if (adrs->coluna > 4){
@@ -145,6 +186,85 @@ void escrever5x5(endereco *adrs){
     }while (adrs->linha < 5 && adrs->coluna < 5);
     adrs->coluna = 0;
     adrs->linha = 0;  
-    
 
+    liberar_lista(dados);
 }
+
+void escrever4x4(endereco *adrs){
+    signed char *dados = ler_arquivo_txt("teste.txt");
+
+    int n = 0;
+    do{
+        escrever(dados[n], dados[n+1], adrs);
+        printf("%d\n\n",dados[n]);
+        n = n + 2;
+        adrs->coluna = adrs->coluna + 2;
+        if (adrs->coluna > 3){
+            adrs->coluna = adrs->coluna % 5;
+            adrs->linha = adrs->linha + 1;
+        }
+        printf("%d/%d\n", adrs->linha, adrs->coluna);
+    }while (adrs->linha < 4 && adrs->coluna < 4);
+    adrs->coluna = 0;
+    adrs->linha = 0;  
+
+    liberar_lista(dados);
+}
+
+void escrever3x3(endereco *adrs){
+    signed char *dados = ler_arquivo_txt("teste.txt");
+
+    int n = 0;
+    do{
+        escrever(dados[n], dados[n+1], adrs);
+        printf("%d\n\n",dados[n]);
+        n = n + 2;
+        adrs->coluna = adrs->coluna + 2;
+        if (adrs->coluna > 2){
+            adrs->coluna = adrs->coluna % 5;
+            adrs->linha = adrs->linha + 1;
+        }
+        printf("%d/%d\n", adrs->linha, adrs->coluna);
+    }while (adrs->linha < 3 && adrs->coluna < 3);
+    adrs->coluna = 0;
+    adrs->linha = 0;  
+
+    liberar_lista(dados);
+}
+
+void escrever2x2(endereco *adrs){
+    signed char *dados = ler_arquivo_txt("teste.txt");
+
+    int n = 0;
+    do{
+        escrever(dados[n], dados[n+1], adrs);
+        printf("%d\n\n",dados[n]);
+        n = n + 2;
+        adrs->coluna = adrs->coluna + 2;
+        if (adrs->coluna > 1){
+            adrs->coluna = adrs->coluna % 5;
+            adrs->linha = adrs->linha + 1;
+        }
+        printf("%d/%d\n", adrs->linha, adrs->coluna);
+    }while (adrs->linha < 2 && adrs->coluna < 2);
+    adrs->coluna = 0;
+    adrs->linha = 0;  
+
+    liberar_lista(dados);
+}
+
+void new5(endereco *adrs){
+    *adrs = (endereco) {1,0,0};
+    int temp;
+    for (int i = 0; i < 5; i++){
+        for (int j = 0; j < 5; j++){
+            scanf("%d", &temp);
+	        signed char x = (signed char) temp;
+            *adrs = (endereco) {1,i,j};
+            escreverIndice(x, adrs);
+        }
+    }
+    *adrs = (endereco) {0,0,0};
+    return;
+}
+
