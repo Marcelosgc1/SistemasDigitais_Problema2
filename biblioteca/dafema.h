@@ -29,60 +29,99 @@ void encerrarDafema();
  * n1: Valor escrito no próximo espaço da matriz
  * endereco: ponteiro p/ struct cujo dados serão escritos
  * 
- * retorno: -1 se mal sucedido, 0 se bem sucedido
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido 
  */
-int escrever(signed char n0, signed char n1, endereco *endereco);
+void escrever(signed char n0, signed char n1, endereco *endereco);
 
 /* Escreve dois números no endereço indicado
  * num: Valor escrito no endereço indicado
  * endereco: ponteiro p/ struct cujo dados serão escritos
  * 
- * retorno: -1 se mal sucedido, 0 se bem sucedido
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido 
  */
-int escreverIndice(signed char num, endereco *endereco);
+void escreverIndice(signed char num, endereco *endereco);
 
 /* Lê dois números no endereço indicado
  * endereco: ponteiro p/ struct cujo dados serão lido
  * 
- * retorno: -1 se mal sucedido, se não, valor correto lido
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido
+ * 
+ * retorno: pacote de 16 bits contendo n0 nos 8 bits menos
+ * significativos e n1 nos 8 bits mais significativos
  */
 unsigned int ler(endereco *endereco);
 
 /* Lê um valor da matriz 
  * endereco: ponteiro p/ struct cujo dados serão lido
  * 
- * retorno: -1 se mal sucedido, se não, valor correto lido
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido
+ * 
+ * retorno: valor de 8 bits lido do endereco indicado
  */
 signed char lerIndice(endereco *endereco);
 
-/* Multiplica matriz A por char */
+/* Multiplica matriz A (0) por char 
+ * 
+ * O resultado é escrito na matriz C (2)
+ */
 void multiEscalar(char multi);
 
-/* Multiplica matrizes A e B*/
+/* Multiplica matrizes A e B 
+ * 
+ * O resultado é escrito na matriz C (2)
+ */
 void multiplicacao();
 
-/* soma matrizes A e B */
+/* Soma matrizes A e B  
+ * 
+ * O resultado é escrito na matriz C (2)
+ */
 void soma();
 
-/* subtrai matriz A por matriz B */
+/* Subtrai matriz A por matriz B  
+ * 
+ * O resultado é escrito na matriz C (2)
+ */
 void subtracao();
 
-/* gera matriz A transposta*/
+/* Gera matriz A transposta 
+ * 
+ * O resultado é escrito na matriz C (2)
+ */
 void transposicao();
 
-/* gera matriz A oposta */
+/* Gera matriz A oposta  
+ * 
+ * O resultado é escrito na matriz C (2)
+ */
 void oposta();
 
-/* calcula de determinante da matriz A 2x2 */
+/* Calcula de determinante da matriz A 2x2  
+ * 
+ * O resultado é escrito na matriz C (2), linha 0 e coluna 0
+ */
 void determinante2x2();
 
-/* calcula de determinante da matriz A 3x3 */
+/* Calcula de determinante da matriz A 3x3   
+ * 
+ * O resultado é escrito na matriz C (2), linha 0 e coluna 0
+ */
 void determinante3x3();
 
-/* calcula de determinante da matriz A 4x4 */
+/* Calcula de determinante da matriz A 4x4   
+ * 
+ * O resultado é escrito na matriz C (2), linha 0 e coluna 0
+ */
 void determinante4x4();
 
-/* calcula de determinante da matriz A 5x5 */
+/* Calcula de determinante da matriz A 5x5   
+ * 
+ * O resultado é escrito na matriz C (2), linha 0 e coluna 0
+ */
 void determinante5x5();
 
 
