@@ -4,16 +4,16 @@
 /*
  * Stuct que indica um indice de uma matriz
  *
- * matriz_id: unsig char
+ * matrizId: unsig char
  * 0 => matriz A
  * 1 => matriz B
  * 2 => matriz C
  * 
  * linha: unsig char
  * coluna: unsig char
-*/
+ */
 typedef struct dafemaEndereco{
-    unsigned char matriz_id;
+    unsigned char matrizId;
     unsigned char linha;
     unsigned char coluna;
 } endereco;
@@ -32,7 +32,29 @@ void encerrarDafema();
  * exceção: caso endereço não esteja parametrizado corretamente,
  * o programa é terminado e o código de erro 255 é emitido 
  */
-void escrever(signed char n0, signed char n1, endereco *endereco);
+void escreverASM(signed char n0, signed char n1, endereco *endereco);
+
+/* Escreve dois números no endereço indicado
+ * n0: Valor escrito no endereço indicado
+ * n1: Valor escrito no próximo espaço da matriz
+ * matrizId: Indica qual a matriz que está sendo escrita
+ * 0 => matriz A
+ * 1 => matriz B
+ * 2 => matriz C
+ * linha: de 0 a 4
+ * coluna: de 0 a 4
+ * 
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido 
+ */
+void escrever(signed char n0, signed char n1, unsigned char matrizId, unsigned char linha, unsigned char coluna){
+    endereco *__DEATHCONSCIOUSNESS__  = malloc(3 * sizeof(unsigned char));
+    __DEATHCONSCIOUSNESS__->matrizId  = matrizId;
+    __DEATHCONSCIOUSNESS__->linha     = linha;
+    __DEATHCONSCIOUSNESS__->coluna    = coluna;
+    escreverASM(n0, n1, __DEATHCONSCIOUSNESS__);
+    free(__DEATHCONSCIOUSNESS__);
+}
 
 /* Escreve dois números no endereço indicado
  * num: Valor escrito no endereço indicado
@@ -41,7 +63,28 @@ void escrever(signed char n0, signed char n1, endereco *endereco);
  * exceção: caso endereço não esteja parametrizado corretamente,
  * o programa é terminado e o código de erro 255 é emitido 
  */
-void escreverIndice(signed char num, endereco *endereco);
+void escreverIndiceASM(signed char num, endereco *endereco);
+
+/* Escreve dois números no endereço indicado
+ * num: Valor escrito no endereço indicado
+ * matrizId: Indica qual a matriz que está sendo escrita
+ * 0 => matriz A
+ * 1 => matriz B
+ * 2 => matriz C
+ * linha: de 0 a 4
+ * coluna: de 0 a 4
+ * 
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido 
+ */
+void escreverIndice(signed char num, unsigned char matrizId, unsigned char linha, unsigned char coluna){
+    endereco *__MASSOFTHEFERMENTINGDREGS__  = malloc(3 * sizeof(unsigned char));
+    __MASSOFTHEFERMENTINGDREGS__->matrizId  = matrizId;
+    __MASSOFTHEFERMENTINGDREGS__->linha     = linha;
+    __MASSOFTHEFERMENTINGDREGS__->coluna    = coluna;
+    escreverIndiceASM(num, __MASSOFTHEFERMENTINGDREGS__);
+    free(__MASSOFTHEFERMENTINGDREGS__);
+}
 
 /* Lê dois números no endereço indicado
  * endereco: ponteiro p/ struct cujo dados serão lido
@@ -52,7 +95,31 @@ void escreverIndice(signed char num, endereco *endereco);
  * retorno: pacote de 16 bits contendo n0 nos 8 bits menos
  * significativos e n1 nos 8 bits mais significativos
  */
-unsigned int ler(endereco *endereco);
+unsigned int lerASM(endereco *endereco);
+
+/* Lê dois números no endereço indicado
+ * matrizId: Indica qual a matriz que está sendo escrita
+ * 0 => matriz A
+ * 1 => matriz B
+ * 2 => matriz C
+ * linha: de 0 a 4
+ * coluna: de 0 a 4
+ * 
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido
+ * 
+ * retorno: pacote de 16 bits contendo n0 nos 8 bits menos
+ * significativos e n1 nos 8 bits mais significativos
+ */
+unsigned int ler(unsigned char matrizId, unsigned char linha, unsigned char coluna){
+    endereco *__NUMBERGIRL__  = malloc(3 * sizeof(unsigned char));
+    __NUMBERGIRL__->matrizId  = matrizId;
+    __NUMBERGIRL__->linha     = linha;
+    __NUMBERGIRL__->coluna    = coluna;
+    unsigned int SAPPUKEI = lerASM(__NUMBERGIRL__);
+    free(__NUMBERGIRL__);
+    return SAPPUKEI;
+}
 
 /* Lê um valor da matriz 
  * endereco: ponteiro p/ struct cujo dados serão lido
@@ -62,7 +129,30 @@ unsigned int ler(endereco *endereco);
  * 
  * retorno: valor de 8 bits lido do endereco indicado
  */
-signed char lerIndice(endereco *endereco);
+signed char lerIndiceASM(endereco *endereco);
+
+/* Lê um valor da matriz 
+ * matrizId: Indica qual a matriz que está sendo escrita
+ * 0 => matriz A
+ * 1 => matriz B
+ * 2 => matriz C
+ * linha: de 0 a 4
+ * coluna: de 0 a 4
+ * 
+ * exceção: caso endereço não esteja parametrizado corretamente,
+ * o programa é terminado e o código de erro 255 é emitido
+ * 
+ * retorno: valor de 8 bits lido do endereco indicado
+ */
+signed char lerIndice(unsigned char matrizId, unsigned char linha, unsigned char coluna){
+    endereco *__RADIOHEAD__  = malloc(3 * sizeof(unsigned char));
+    __RADIOHEAD__->matrizId  = matrizId;
+    __RADIOHEAD__->linha     = linha;
+    __RADIOHEAD__->coluna    = coluna;
+    signed char OKCOMPUTER = lerIndiceASM(__RADIOHEAD__);
+    free(__RADIOHEAD__);
+    return OKCOMPUTER;
+}
 
 /* Multiplica matriz A (0) por char 
  * 

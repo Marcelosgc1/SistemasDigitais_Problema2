@@ -5,17 +5,17 @@
 .global encerrarDafema
 .type encerrarDafema, %function
 
-.global escrever
-.type escrever, %function
+.global escreverASM
+.type escreverASM, %function
 
-.global escreverIndice
-.type escreverIndice, %function
+.global escreverIndiceASM
+.type escreverIndiceASM, %function
 
-.global ler
-.type ler, %function
+.global lerASM
+.type lerASM, %function
 
-.global lerIndice
-.type lerIndice, %function
+.global lerIndiceASM
+.type lerIndiceASM, %function
 
 .global soma
 .type soma, %function
@@ -132,7 +132,7 @@ encerrarDafema:
         BX LR
 
 
-escrever:
+escreverASM:
         SUB SP, SP, #16
         STR R3, [SP, #0]
         STR R4, [SP, #4]
@@ -195,7 +195,7 @@ escrever:
 
         BX LR
 
-escreverIndice:
+escreverIndiceASM:
         SUB SP, SP, #16
         STR R3, [SP, #0]
         STR R4, [SP, #4]
@@ -218,7 +218,7 @@ escreverIndice:
         MOV R5, R0
         MOV R0, R1
 
-        BL ler
+        BL lerASM
 
 
         @-----Monta paramatros p/ chamar função de escrever-----
@@ -258,7 +258,7 @@ sub_col:
         MOV R5, R0
         MOV R0, R1
 
-        BL ler
+        BL lerASM
 
         @-----Monta paramatros p/ chamar função de escrever-----
         SUB SP, SP, #4
@@ -271,7 +271,7 @@ sub_col:
 continue_to_write:
         
         @-----Escreve na matriz-----
-        BL escrever
+        BL escreverASM
         
         LDR R2, [SP, #0]
         ADD SP, SP, #4
@@ -284,7 +284,7 @@ continue_to_write:
         
         BX LR
 
-ler:
+lerASM:
         SUB SP, SP, #16
         STR R3, [SP, #0]
         STR R4, [SP, #4]
@@ -358,7 +358,7 @@ wrong_call_error:
         SVC 0
 
 
-lerIndice:
+lerIndiceASM:
         SUB SP, SP, #16
         STR R3, [SP, #0]
         STR R4, [SP, #4]
