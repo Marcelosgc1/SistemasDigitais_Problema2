@@ -1,9 +1,15 @@
 .section .text
-.global mapeiaMemoria
-.type mapeiaMemoria, %function
+.global iniciarDafema
+.type iniciarDafema, %function
+
+.global encerrarDafema
+.type encerrarDafema, %function
 
 .global escrever
 .type escrever, %function
+
+.global escreverIndice
+.type escreverIndice, %function
 
 .global ler
 .type ler, %function
@@ -43,7 +49,7 @@
 
 .global write_instruction
 
-mapeiaMemoria:
+iniciarDafema:
         SUB SP, SP, #28
         STR R0, [SP, #0]
         STR R1, [SP, #4]
@@ -61,7 +67,10 @@ mapeiaMemoria:
 
         SVC 0
 
+        @salva FD
         MOV R4, R0
+        LDR R0, =FILE_DESCRIPTOR
+        STR R4, [R0, #0]
         
         @chamando mmap
         MOV R0, #0
@@ -79,9 +88,6 @@ mapeiaMemoria:
         LDR R1, =FPGA_ADRS
         STR R0, [R1, #0]
 
-        @MOV R2, #7              @Valor arbitrário p/ teste
-        @STR R2, [R0, #0]
-
 
         LDR R0, [SP, #0]
         LDR R1, [SP, #4]
@@ -93,8 +99,56 @@ mapeiaMemoria:
         ADD SP, SP, #28
 
 	BX LR
-        
+
+
+encerrarDafema:
+        SUB SP, SP, #12
+        STR R0, [SP, #0]
+        STR R1, [SP, #4]
+        STR R7, [SP, #8]
+
+        @chamando munmap
+        LDR R0, =FPGA_ADRS
+        LDR R0, [R0, #0]
+        LDR R1, =FPGA_SPAM
+        LDR R1, [R1, #0]
+        MOV R7, #91
+
+        SVC 0
+
+        @fechar arquivo DEV_MEM
+        LDR R0, =FILE_DESCRIPTOR
+        LDR R0, [R0, #0]
+        MOV R7, #6
+
+        SVC 0
+
+
+        LDR R0, [SP, #0]
+        LDR R1, [SP, #4]
+        LDR R7, [SP, #8]
+        ADD SP, SP, #12
+
+        BX LR
+
+
 escrever:
+        SUB SP, SP, #16
+        STR R3, [SP, #0]
+        STR R4, [SP, #4]
+        STR R5, [SP, #8]
+        STR LR, [SP, #12]
+
+        @-----Carrega os valores de linha, coluna e ID, do struct-----
+        LDR R4, [R2, #2]
+        AND R4, R4, #255
+
+        LDR R3, [R2, #1]
+        AND R3, R3, #255
+
+        LDR R2, [R2, #0]
+        AND R2, R2, #255
+
         @-----Verifica erro nos valores da matriz, linha e coluna-----
         CMP R2, #2
         BHI wrong_call_error
@@ -105,9 +159,7 @@ escrever:
         CMP R4, #4
         BHI wrong_call_error
 
-        SUB SP, SP, #4
-        STR R5, [SP, #0]
-
+        @-----Verifica se endereço está parametrizado-----
         EOR R5, R3, R4
         ANDS R5, R5, #1
         BNE wrong_call_error
@@ -115,6 +167,7 @@ escrever:
         @-----Escrevendo parametros na instrução-----
         LSL R0, R0, #20
 
+        AND R1, R1, #255
         LSL R1, R1, #12
         ORR R0, R0, R1
 
@@ -129,121 +182,247 @@ escrever:
 
         @-----Opcode da instrução-----
         ORR R0, R0, #2
-
-        SUB SP, SP, #4
-        STR LR, [SP, #0]
+        
         
         BL write_instruction
         
-        LDR LR, [SP, #0]
-        LDR R5, [SP, #4]
-        ADD SP, SP, #8
+        
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
+        ADD SP, SP, #16
 
         BX LR
 
+escreverIndice:
+        SUB SP, SP, #16
+        STR R3, [SP, #0]
+        STR R4, [SP, #4]
+        STR R5, [SP, #8]
+        STR LR, [SP, #12]
+
+        @-----Carrega os valores de linha e coluna, do struct-----
+        LDR R3, [R1, #1]
+        LDR R4, [R1, #2]
+
+        @-----Verifica se o endereco já esta parametrizado-----
+        EOR R5, R3, R4
+        ANDS R5, R5, #1
+
+        BNE odd_instruction    
+
+
+        @caso endereco já parametrizado:
+        @-----Carrega valor salvo na matriz-----
+        MOV R5, R0
+        MOV R0, R1
+
+        BL ler
+
+
+        @-----Monta paramatros p/ chamar função de escrever-----
+        SUB SP, SP, #4
+        STR R2, [SP, #0]
+        MOV R2, R1      @R2 -> ponteiro p/ struct
+
+        LSR R0, R0, #8  
+        MOV R1, R0      @R1 -> n1, valor mantido
+        MOV R0, R5      @R0 -> n0, valor a ser alterado
+        B continue_to_write
+
+      
+odd_instruction:
+        @caso endereco NÃO esteja parametrizado:
+        @-----Verifica se o valor da coluna é 0-----
+        AND R5, R4, #7
+        CMP R5, #0
+
+        BNE sub_col
+
+        @-----Se for 0, subtrai linha e põe coluna como 4, ultima coluna da matriz-----
+        SUB R3, R3, #1
+        LSR R4, R4, #3
+        LSL R4, R4, #3
+
+        ORR R4, R4, #5
+        
+
+sub_col:
+        @-----Paramatriza endereco e salva na struct-----
+        SUB R4, R4, #1
+
+        STR R3, [R1, #1]
+        STR R4, [R1, #2]
+
+        MOV R5, R0
+        MOV R0, R1
+
+        BL ler
+
+        @-----Monta paramatros p/ chamar função de escrever-----
+        SUB SP, SP, #4
+        STR R2, [SP, #0]
+        MOV R2, R1       @R2 -> ponteiro p/ struct
+
+        MOV R1, R5       @R1 -> n1, valor a ser alterado
+        AND R0, R0, #255 @R0 -> n0, valor mantido
+        
+continue_to_write:
+        
+        @-----Escreve na matriz-----
+        BL escrever
+        
+        LDR R2, [SP, #0]
+        ADD SP, SP, #4
+
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
+        ADD SP, SP, #16
+        
+        BX LR
+
 ler:
+        SUB SP, SP, #16
+        STR R3, [SP, #0]
+        STR R4, [SP, #4]
+        STR R5, [SP, #8]
+        STR LR, [SP, #12]
+        
+        @-----Carrega os valores de linha, coluna e ID, do struct-----
+        LDR R4, [R0, #2]
+        AND R4, R4, #255
+
+        LDR R3, [R0, #1]
+        AND R3, R3, #255
+
+        LDR R0, [R0, #0]
+        AND R0, R0, #255
+
         @-----Verifica erro nos valores da matriz, linha e coluna-----
         CMP R0, #2
         BHI wrong_call_error
 
-        CMP R1, #4
+        CMP R3, #4
         BHI wrong_call_error
 
-        CMP R2, #4
+        CMP R4, #4
         BHI wrong_call_error
 
-        SUB SP, SP, #4
-        STR R5, [SP, #0]
 
-        EOR R5, R1, R2
+        @-----Verifica se endereço está parametrizado-----
+        EOR R5, R4, R3
         ANDS R5, R5, #1
         BNE wrong_call_error
         
         @-----Escrevendo parametros na instrução-----
         LSL R0, R0, #10
 
-        LSL R1, R1, #7
-        ORR R0, R0, R1
+        LSL R3, R3, #7
+        ORR R0, R0, R3
         
-        LSL R2, R2, #4
-        ORR R0, R0, R2
+        LSL R4, R4, #4
+        ORR R0, R0, R4
 
         @-----Opcode da instrução-----
         ORR R0, R0, #1
 
-        SUB SP, SP, #4
-        STR LR, [SP, #0]
-
         BL write_instruction
         
-        LDR R1, =FPGA_ADRS
-        LDR R1, [R1, #0]
-        LDR R0, [R1, #0x10]
+        @-----Carrega valor da memória, que a FPGA enviou-----
+        LDR R3, =FPGA_ADRS
+        LDR R3, [R3, #0]
+        LDR R0, [R3, #0x10]
         
-        LDR LR, [SP, #0]
-        LDR R5, [SP, #4]
-        ADD SP, SP, #8
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
+        ADD SP, SP, #16
 
         BX LR
 
 
 wrong_call_error:
+        @-----Syscall exit p/ erro-----
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
+        ADD SP, SP, #16
+        
         MOV R0, #-1
+        MOV R7, #1
+        SVC 0
 
-        LDR R5, [SP, #0]
-        ADD SP, SP, #4
-
-        BX LR
 
 lerIndice:
+        SUB SP, SP, #16
+        STR R3, [SP, #0]
+        STR R4, [SP, #4]
+        STR R5, [SP, #8]
+        STR LR, [SP, #12]
+
+        @-----Carrega os valores de linha, coluna e ID, do struct-----
+        LDR R4, [R0, #2]
+        AND R4, R4, #255
+
+        LDR R3, [R0, #1]
+        AND R3, R3, #255
+
+        LDR R0, [R0, #0]
+        AND R0, R0, #255
+
         @-----Verifica erro nos valores da matriz, linha e coluna-----
         CMP R0, #2
         BHI wrong_call_error
 
-        CMP R1, #4
+        CMP R3, #4
         BHI wrong_call_error
 
-        CMP R2, #4
+        CMP R4, #4
         BHI wrong_call_error
 
-        SUB SP, SP, #4
-        STR R5, [SP, #0]
-
-        @R1 é linha
-        @R2 é coluna
-
-        EOR R5, R1, R2 @Xor salvo em R5
+        @-----Verifica se endereço está parametrizado-----
+        EOR R5, R3, R4
         ANDS R5, R5, #1  
 
         BEQ correct_instruction
-        CMP R2, #0
-        BNE sub_adrs
-        SUB R1, R1, #1
-        MOV R2, #5
-sub_adrs:
-        SUB R2, R2, #1
 
-        @-----Escrevendo parametros na instrução-----
+        @caso endereco NÃO esteja parametrizado:
+        @-----Verifica se o valor da coluna é 0-----
+        CMP R4, #0
+        BNE sub_adrs
+
+        @-----Se for 0, subtrai linha e põe coluna como 4, ultima coluna da matriz-----
+        SUB R3, R3, #1
+        MOV R4, #5
+sub_adrs:
+        SUB R4, R4, #1
+
+        
 correct_instruction:
+        @-----Escrevendo parametros na instrução-----
         LSL R0, R0, #10
 
-        LSL R1, R1, #7
-        ORR R0, R0, R1
+        LSL R3, R3, #7
+        ORR R0, R0, R3
         
-        LSL R2, R2, #4
-        ORR R0, R0, R2
+        LSL R4, R4, #4
+        ORR R0, R0, R4
 
         @-----Opcode da instrução-----
         ORR R0, R0, #1
 
-        SUB SP, SP, #4
-        STR LR, [SP, #0]
 
+        @-----Lê o pacote de bits e separa o número escolhido-----
         BL write_instruction
         
-        LDR R1, =FPGA_ADRS
-        LDR R1, [R1, #0]
-        LDR R0, [R1, #0x10]
+        LDR R3, =FPGA_ADRS
+        LDR R3, [R3, #0]
+        LDR R0, [R3, #0x10]
 
         @se r5 == 0: pega n0
         @se r5 == 1: pega n1
@@ -254,9 +433,11 @@ correct_instruction:
 else_n0:
         AND R0, R0, #255
 
-        LDR LR, [SP, #0]
-        LDR R5, [SP, #4]
-        ADD SP, SP, #8
+        LDR R3, [SP, #0]
+        LDR R4, [SP, #4]
+        LDR R5, [SP, #8]
+        LDR LR, [SP, #12]
+        ADD SP, SP, #16
 
         BX LR
 
@@ -266,6 +447,7 @@ soma:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #3
 
         BL write_instruction
@@ -281,6 +463,7 @@ subtracao:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #4
 
         BL write_instruction
@@ -296,6 +479,7 @@ multiplicacao:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #5
 
         BL write_instruction
@@ -311,6 +495,7 @@ transposicao:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #6
 
         BL write_instruction
@@ -326,6 +511,7 @@ oposta:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #7
 
         BL write_instruction
@@ -340,7 +526,10 @@ multiEscalar:
         SUB SP, SP, #4
         STR LR, [SP, #0]
 
+        @-----Escalar que multiplicará a matriz-----
         LSL R0, R0, #4
+        
+        @-----Opcode da instrução-----
         ORR R0, R0, #8
 
         BL write_instruction
@@ -355,6 +544,7 @@ determinante2x2:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #9
 
         BL write_instruction
@@ -370,6 +560,7 @@ determinante3x3:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #10
 
         BL write_instruction
@@ -385,6 +576,7 @@ determinante4x4:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #11
 
         BL write_instruction
@@ -400,6 +592,7 @@ determinante5x5:
         STR R0, [SP, #0]
         STR LR, [SP, #4]
 
+        @-----Opcode da instrução-----
         MOV R0, #12
 
         BL write_instruction
@@ -414,27 +607,35 @@ write_instruction:
         SUB SP, SP, #4
         STR R1, [SP, #0]
 
+        @-----Carrega endereço virtual mapeado e escreve instrução-----
         LDR R1, =FPGA_ADRS
         LDR R1, [R1, #0]
-        STR R0, [R1, #0] 
+        STR R0, [R1, #0]
+
+
+        @-----Lógica do handshake-----
+
+        @-----Envia sinal de ativar instrução-----
         MOV R0, #1
-        STR R0, [R1, #0x20] @deslocamento p/ sinal de "activate_instruction"
+        STR R0, [R1, #0x20] @Offset de "activate_instruction"
 activate_loop:
-        @Fica no loop até o wait_signal for 1
-        
-        LDR R0, [R1, #0x30] @deslocmento p/ sinal de "wait_signal"
+        @-----Aguarda FPGA enviar sinal de espera-----
+        LDR R0, [R1, #0x30] @Offset de "wait_signal"
         CMP R0, #0
         BEQ activate_loop
 
+        @-----Retira sinal de ativar instrução-----
 	MOV R0, #0
+        STR R0, [R1, #0x20] @Offset de "activate_instruction"
 
-        STR R0, [R1, #0x20] @deslocamento p/ sinal de "activate_instruction"
 wait_loop:
-        LDR R0, [R1, #0x30] @deslocmento p/ sinal de "wait_signal"
+        @-----Aguarda FPGA terminar o procedimento-----
+        LDR R0, [R1, #0x30] @Offset de "wait_signal"
         CMP R0, #1
         BEQ wait_loop
         
 
+        @-----Instrução realizada com sucesso-----
         LDR R1, [SP, #0]
         ADD SP, SP, #4
 
@@ -443,15 +644,24 @@ wait_loop:
 
 .section .data
 
-DEV_MEM:
+
+DEV_MEM: 
+        @-----Arquivo mem, necessário p/ fazer mapeamento da memoria-----
         .asciz "/dev/mem"
 
 FPGA_SPAM:
+        @-----Espaço de memória reservado p/ o mapeamento-----
         .word 0x1000
 
 FPGA_ADRS:
-        .space 4;
+        @-----Label p/ endereço de memória virtual mapeado do AXI Bridge-----
+        .space 4
+
+FILE_DESCRIPTOR:
+        @-----Label p/ file descriptor de /dev/mem-----
+        .space 4
 
 FPGA_BRIDGE:
+        @-----Endereço físico de memória do AXI Bridge-----
         .word 0xff200
 
