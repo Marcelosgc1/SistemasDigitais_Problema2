@@ -45,10 +45,7 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
     printf("\n[11] DETER4X4: ");
     printf("\n[12] DETER5X5: ");
     printf("\n[13] LER RESULT: ");
-    printf("\n[14] ESCREVER MATRIZ COMPLETA: ");
-    printf("\n[15] ALTERAR ID, COLUNA E LINHA: ");
-    printf("\n[16] TESTE DE ERRO: ");
-    printf("\n[17] LER MATRIZ COMPLETA: ");
+    printf("\n[14] DIGITE O TAMANHO DA MATRIZ: ");
     printf("\n OPÇÃO: ");
     int temporario, size;
     signed char temp1, temp2, temp3;
@@ -164,23 +161,6 @@ int iniciarPrograma(int seletor, signed char n0, signed char n1) {
             break;
 	    case 15:
             new5(meuEndereco);
-            break;
-        case 16:
-            // Teste de Erro ao apontar para um ID de matriz inválido
-            *meuEndereco = (endereco) {4, 0, 0};
-            escrever3x3(meuEndereco);
-            break;
-        case 17:
-            // Lendo Matriz A
-            for(char i =0; i < 5, i++){
-                for(char j = i % 2, j < 5, j+=2){
-                    *meuEndereco = (endereco) {0, i, j};
-                    temp2 = lerIndice(meuEndereco);
-                    temp3 = lerIndice(meuEndereco);
-                    printf("valor n0: %d\n", temp2);
-                    printf("valor n1: %d\n", temp3);
-                }
-            }
             break;
         default:
             printf("Opção inválida! Tente novamente.\n");
