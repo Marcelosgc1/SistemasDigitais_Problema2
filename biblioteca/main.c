@@ -97,7 +97,7 @@ void operacoes(){
 }
 
 void escrever2x2ASM(){
-    __uint8_t temp;
+    int temp;
     signed char n0, n1;
 
     endereco *adrs = malloc(sizeof(signed char) * 3);
@@ -280,25 +280,24 @@ void exemplo8(){
     signed char *dados = ler_arquivo_txt("teste.txt");
 
     printf("Digite o tamanho da matriz: ");
-    scanf("%d", size);
+    scanf("%d", &size);
     
-    int matriz[size][size];
-    int result [5][5];
+    int matriz[5][5];
+    int result[5][5];
     int cont = 0;
 
     for(int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
             matriz[i][j] = dados[cont++];
-            
         }
     }
 
-    printf("Matriz [0 = A e 1 = B]: %d");
+    printf("Matriz [0 = A e 1 = B]: ");
     scanf("%d", &a_or_b);
 
     escreveMatriz(matriz, size, a_or_b);
-    leMatriz(result,size,matriz, a_or_b);
-    printMatriz(result,size);
+    leMatriz(result, size, a_or_b);
+    printMatriz(result, size);
 }
 
 int main(){
