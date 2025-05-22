@@ -276,11 +276,14 @@ void exemplo7(){
 int main(){
 	iniciarDafema();
     int opcao = 1, delay;
+    int size;
+    int a_or_b;
 
     while(opcao != 0){
         printf("[1] Matrizes pre-setadas\n");
         printf("[2] Escrever Matriz pelo terminal\n");
         printf("[3] Exit call p/ erro\n");
+        printf("[4] Escrever Matriz pelo .txt\n");
         printf("[5] Testar Operações\n");
         printf("Escolha: ");
         scanf("%d", &opcao);
@@ -304,6 +307,16 @@ int main(){
         case 3:
             exemplo7();
             break;
+        case 4:
+            signed char *dados = ler_arquivo_txt("teste.txt");
+
+            printf("Digite o tamanho da matriz: ");
+            scanf("%d", &size);
+            printf("Matriz [0 = A e 1 = B]: %d");
+            scanf("%d", &a_or_b);
+
+            escreveMatriz(dados, size, a_or_b);
+            break;
         case 5:
             exemplo6();
             break;
@@ -315,4 +328,3 @@ int main(){
     encerrarDafema();
 	return 0;
 };
-
