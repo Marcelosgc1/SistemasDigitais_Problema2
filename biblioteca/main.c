@@ -283,20 +283,23 @@ void exemplo8(){
     scanf("%d", size);
     
     int matriz[size][size];
-
+    int result [5][5];
     int cont = 0;
     int n;
-    
+
     for(int i = 0; i < n; i++){
         for(int j = 0; j < n; j++){
             matriz[i][j] = dados[cont++];
+            
         }
     }
-        
+
     printf("Matriz [0 = A e 1 = B]: %d");
     scanf("%d", &a_or_b);
 
     escreveMatriz(matriz, size, a_or_b);
+    leMatriz(result,size,matriz, a_or_b);
+    printMatriz(result,size);
 }
 
 int main(){
