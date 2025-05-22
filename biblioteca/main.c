@@ -273,11 +273,35 @@ void exemplo7(){
     ler(1,0,1);
 }
 
+void exemplo8(){
+    int a_or_b;
+    int size;
+
+    signed char *dados = ler_arquivo_txt("teste.txt");
+
+    printf("Digite o tamanho da matriz: ");
+    scanf("%d", size);
+    
+    int matriz[size][size];
+
+    int cont = 0;
+    int n;
+    
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            matriz[i][j] = dados[cont++];
+        }
+    }
+        
+    printf("Matriz [0 = A e 1 = B]: %d");
+    scanf("%d", &a_or_b);
+
+    escreveMatriz(matriz, size, a_or_b);
+}
+
 int main(){
 	iniciarDafema();
     int opcao = 1, delay;
-    int size;
-    int a_or_b;
 
     while(opcao != 0){
         printf("[1] Matrizes pre-setadas\n");
@@ -308,14 +332,7 @@ int main(){
             exemplo7();
             break;
         case 4:
-            signed char *dados = ler_arquivo_txt("teste.txt");
-
-            printf("Digite o tamanho da matriz: ");
-            scanf("%d", &size);
-            printf("Matriz [0 = A e 1 = B]: %d");
-            scanf("%d", &a_or_b);
-
-            escreveMatriz(dados, size, a_or_b);
+            exemplo8();
             break;
         case 5:
             exemplo6();
