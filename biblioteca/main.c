@@ -301,7 +301,7 @@ void exemplo8(){
 }
 
 int main(){
-	iniciarDafema();
+	  iniciarDafema();
     int opcao = 1, delay;
 
     while(opcao != 0){
@@ -343,6 +343,7 @@ int main(){
         }
     }
     
-    encerrarDafema();
+  encerrarDafema();
 	return 0;
 };
+
