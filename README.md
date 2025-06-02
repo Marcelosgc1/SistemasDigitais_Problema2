@@ -54,9 +54,9 @@ Sumário
 
 <div id="protocolo">
   <h2>Protocolo de Comunicação</h2>
-  <img src="imagens/protocolo.png"><br><br>
+  <img src="imagens/protocolo.png"><br>
   <p>
-    As instruções são enviadas do HPS para o FPGA pela memória mapeada em Assembly. <br>
+    As instruções são enviadas do HPS para o FPGA pela memória mapeada em Assembly. <br><br>
     O protocolo exige que o campo "Activate" seja setado após o envio da instrução, então o HPS aguarda o sinal de "Wait" ser setado, para confirmar que a FPGA começou a processar a instrução, depois retira o sinal de "Activate" e verifica "Wait" até que a execução seja concluída.
   </p>
 </div>
