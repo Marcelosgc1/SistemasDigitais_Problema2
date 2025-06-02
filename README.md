@@ -67,7 +67,7 @@ Sumário
     A comunicação e controle do coprocessador pelo HPS são implementados em Assembly ARMv7. A biblioteca oferece funções como:
   </p>
   <ul>
-    <li><strong>Mapeamento de memória:</strong> usa `mmap()` para acessar os PIOs</li>
+    <li><strong>Mapeamento de memória:</strong> usa `mmap()` para acessar os PIOs e `unmmap()` p/ liberar memória</li>
     <ul>
       <li>InciarDafema</li>
       <li>EncerrarDafema</li>
