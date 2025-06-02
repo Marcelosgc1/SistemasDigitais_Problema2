@@ -68,8 +68,27 @@ Sumário
   </p>
   <ul>
     <li><strong>Mapeamento de memória:</strong> usa `mmap()` para acessar os PIOs</li>
+    <ul>
+      <li>InciarDafema</li>
+      <li>EncerrarDafema</li>
+    </ul>
     <li><strong>Funções aritméticas:</strong> formatação de instrução com máscaras e shift</li>
-    <li><strong>Funções de leitura/escrita:</strong> suporte a envio de dois valores por vez</li>
+    <ul>
+      <li>Soma</li>
+      <li>Subtração</li>
+      <li>Transposta</li>
+      <li>Oposta</li>
+      <li>Multiplicação Escalar</li>
+      <li>Multiplicação</li>
+      <li>Determinantes 2x2, 3x3, 4x4 e 5x5</li>
+    </ul>
+    <li><strong>Funções de leitura/escrita:</strong><br>Essas funções devem receber, o ID da matriz, que deve ser menor que 3, linha e coluna menores que 5 e parametrizados, seguindo a regra de acessar os índices de 2 em 2, começando do índice [0][0], já que estas opreações o programador trabalha com 2 números por vez. Para as funções Ler Indice e Escrever Indice, não se aplica a regra da parametrização de linha e coluna, já que é trabalhado apenas um número por vez.</li>
+    <ul>
+      <li>Ler</li>
+      <li>Escrever</li>
+      <li>Ler Indice</li>
+      <li>Escrever Indice</li>
+    </ul>
   </ul>
 
   <p>As structs são utilizadas para encapsular parâmetros e facilitar o uso das funções, contornando a limitação de 4 registradores nos parâmetros de função em ARM.</p>
