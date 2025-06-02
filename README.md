@@ -4,6 +4,8 @@
 <p>
   O segundo problema do projeto MI - Sistemas Digitais tem como foco a comunicação entre o processador HPS (Hard Processor System) e o FPGA (Field Programmable Gate Array) da placa DE1-SoC. A integração entre as duas unidades foi feita por meio do uso de PIOs (Parallel Input/Output) personalizados, configurados através do Platform Designer e mapeados via barramento AXI. A comunicação eficiente entre os dois blocos permite o envio de instruções, dados e comandos de controle para execução das operações matriciais.
 
+A implementação do cooprocessador em verilog pode ser encontrada no [repositório do problema 1](https://github.com/Marcelosgc1/SistemasDigitais_Problema1/tree/HPS_communication), com as modificações necessárias descritas acima.
+
   <div align="center">
     <img src="images/fpga-hps.png"><br>
     <strong>Conexão HPS ↔ FPGA via PIOs AXI</strong><br><br>
@@ -19,7 +21,6 @@ Sumário
    * [Visão Geral do Sistema](#visao)
    * [Plataform Designer e PIOs](#pio)
    * [Protocolo de Comunicação](#protocolo)
-   * [Sinal de Sincronismo (WaitSignal)](#waitsignal)
    * [Biblioteca em Assembly](#assembly)
    * [Testes Realizados](#testes)
    * [Referências](#referencias)
@@ -53,36 +54,10 @@ Sumário
 
 <div id="protocolo">
   <h2>Protocolo de Comunicação</h2>
+  <img src="imagens/protocolo.png"><br>
   <p>
-    A instrução enviada ao coprocessador é composta por 28 bits, com os campos:
-  </p>
-  <ul>
-    <li>Número 0: 8 bits</li>
-    <li>Número 1: 8 bits</li>
-    <li>ID da Matriz: 2 bits (00 - A, 01 - B, 10 - C)</li>
-    <li>Linha: 3 bits</li>
-    <li>Coluna: 3 bits</li>
-    <li>Opcode: 4 bits</li>
-  </ul>
-
-  <p>Para operações aritméticas, são utilizados apenas os campos escalar (8 bits) e opcode (4 bits).</p>
-
-  <p>
-    As instruções são enviadas do HPS para o FPGA usando o driver de mapeamento de memória em Assembly. O protocolo exige que o campo "Activate" seja setado após o envio da instrução e que o campo "Wait" seja verificado até que a execução seja concluída.
-  </p>
-</div>
-
-<div id="waitsignal">
-  <h2>Sinal de Sincronismo (WaitSignal)</h2>
-  <p>
-    O WaitSignal é um sinal de 1 bit que indica o estado atual do coprocessador:
-  </p>
-  <ul>
-    <li>0 → Pronto para nova instrução</li>
-    <li>1 → Executando instrução atual</li>
-  </ul>
-  <p>
-    Esse sinal é fundamental para evitar conflitos e garantir que a próxima instrução só seja enviada após a conclusão da anterior.
+    As instruções são enviadas do HPS para o FPGA pela memória mapeada em Assembly. 
+    O protocolo exige que o campo "Activate" seja setado após o envio da instrução, então o HPS aguarda o sinal de "Wait" ser setado, para confirmar que a FPGA começou a processar a instrução, depois retira o sinal de "Activate" e verifica "Wait" até que a execução seja concluída.
   </p>
 </div>
 
