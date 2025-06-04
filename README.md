@@ -6,7 +6,8 @@
 
 A implementação do cooprocessador em verilog pode ser encontrada no [repositório do problema 1](https://github.com/Marcelosgc1/SistemasDigitais_Problema1/tree/HPS_communication), com as modificações necessárias descritas acima.
 
-![conexão](images/fpga-hps.png)
+
+<img src="images/fpga-hps.png"><br>
 <strong>Conexão HPS ↔ FPGA via PIOs AXI</strong><br><br>
 
   O principal objetivo desta etapa do projeto é viabilizar um protocolo de comunicação simples, porém robusto, entre o software em C rodando no HPS (Linux embarcado) e a lógica do coprocessador implementada no FPGA, utilizando linguagem Assembly e Verilog.
